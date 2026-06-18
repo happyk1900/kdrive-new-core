@@ -44,15 +44,17 @@ const EYE_OPEN = `<svg viewBox="0 0 24 24" width="18" height="18" stroke="curren
 const EYE_CLOSED = `<svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle><line x1="1" y1="1" x2="23" y2="23"></line></svg>`;
 function togglePass(inputId, iconEl) { let inp = document.getElementById(inputId); if(inp.type === 'password') { inp.type = 'text'; iconEl.innerHTML = EYE_CLOSED; } else { inp.type = 'password'; iconEl.innerHTML = EYE_OPEN; } }
 
-let isDraggingBoo = false; let isReturningBoo = false; let overloadOsc = null; let overloadGain = null;
+let overloadOsc = null; let overloadGain = null;
 let initPinchDist = 0; let isPinching = false;
 const base64Wallpapers = ["https://i.postimg.cc/J4xHjMr7/1.webp", "https://i.postimg.cc/fRbtKpyD/2.webp", "https://i.postimg.cc/13znH2XR/3.webp", "https://i.postimg.cc/8zCJH9cz/4.webp", "https://i.postimg.cc/K8YkNwjG/5.jpg", "https://i.postimg.cc/SxK2r3R8/6.webp", "https://i.postimg.cc/x1dJRh8R/7.webp"];
 const musicTracks = ["https://github.com/happyk1900/new-abum-17-track/raw/refs/heads/main/Kai%20Ripe%20(1).mp3", "https://github.com/happyk1900/new-abum-17-track/raw/refs/heads/main/Kai%20Ripe%20(2).mp3", "https://github.com/happyk1900/new-abum-17-track/raw/refs/heads/main/Kai%20Ripe%20(4).mp3", "https://github.com/happyk1900/new-abum-17-track/raw/refs/heads/main/Kai%20Ripe%20R%C5%8Dnin.mp3", "https://github.com/happyk1900/new-abum-17-track/raw/refs/heads/main/Kai%20Ripe%20Signal.mp3", "https://github.com/happyk1900/new-abum-17-track/raw/refs/heads/main/Kai%20Ripe%20Tokyo.mp3", "https://github.com/happyk1900/new-abum-17-track/raw/refs/heads/main/Kai%20Ripe.mp3", "https://github.com/happyk1900/new-abum-17-track/raw/refs/heads/main/Kai-Ripe%20Little%20Ninja%20(1).mp3", "https://github.com/happyk1900/new-abum-17-track/raw/refs/heads/main/Kai-Ripe%20Morning.mp3", "https://github.com/happyk1900/new-abum-17-track/raw/refs/heads/main/Kai-Ripe%20Night.mp3", "https://github.com/happyk1900/new-abum-17-track/raw/refs/heads/main/Kai-Ripe.mp3", "https://github.com/happyk1900/new-abum-17-track/raw/refs/heads/main/Kai_Ripe_Online.mp4", "https://github.com/happyk1900/new-abum-17-track/raw/refs/heads/main/Neon%20Koi%20Bet.mp3", "https://github.com/happyk1900/new-abum-17-track/raw/refs/heads/main/Rain%20Table%20Circuit.mp3", "https://github.com/happyk1900/new-abum-17-track/raw/refs/heads/main/Shamisen%20Chips.mp3", "https://github.com/happyk1900/new-abum-17-track/raw/refs/heads/main/Shamisen%20Neon%20Heist.mp3", "https://github.com/happyk1900/new-abum-17-track/raw/refs/heads/main/The_High_Stakes_Ascent.mp4"];
 const neonColors = ['#00ff88', '#00e5ff', '#bf00ff', '#ffd700', '#ff3366'];
 
-let currentWallpaperIndex = 0; let isLoggedIn = false; let guardTimeout = null;
+let currentWallpaperIndex = 0; let isLoggedIn = false;
 let loginDrumAudio = new Audio("https://github.com/happyk1900/-m-thanh-app/raw/refs/heads/main/0604.mp4");
+let cameraShutterAudio = new Audio("https://www.myinstants.com/media/sounds/camera-shutter-click-01.mp3");
 let bgAudio = new Audio(); bgAudio.loop = false; let currentTrackState = 0; let isMusicPlaying = false; let isMuted = false;
+
 bgAudio.onended = function() { if(!isMuted) { currentTrackState = (currentTrackState % musicTracks.length) + 1; bgAudio.src = musicTracks[currentTrackState - 1]; bgAudio.play().catch(e=>{}); updateAudioUI(currentTrackState); } };
 
 function updateAudioUI(tNum) { let color = neonColors[(tNum-1)%neonColors.length]; document.getElementById('audioHud').className = 'audio-hud audio-active'; document.getElementById('audioHud').style.setProperty('--neon-color', color); document.getElementById('trackText').innerHTML = `[ ▶️ TRK: ${(tNum<10?'0':'')+tNum} ]`; document.getElementById('trackText').style.color = color; document.getElementById('coreSystem').style.setProperty('--core-color', color); }
@@ -64,6 +66,11 @@ function initAudio() { if(!actx) actx = new AudioContext(); if(actx.state==='sus
 document.body.addEventListener('touchstart', initAudio, {once:true});
 function playCyberSound() { try { initAudio(); const osc = actx.createOscillator(); const gain = actx.createGain(); osc.connect(gain); gain.connect(actx.destination); osc.type = 'triangle'; const now = actx.currentTime; osc.frequency.setValueAtTime(1500, now); osc.frequency.exponentialRampToValueAtTime(400, now + 0.12); gain.gain.setValueAtTime(0.5, now); gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15); osc.start(now); osc.stop(now + 0.15); } catch(e){} }
 function playWhoosh() { if(!actx) return; let osc = actx.createOscillator(); let gain = actx.createGain(); osc.type = 'sine'; osc.frequency.setValueAtTime(300, actx.currentTime); osc.frequency.exponentialRampToValueAtTime(40, actx.currentTime + 1.2); osc.connect(gain); gain.connect(actx.destination); gain.gain.setValueAtTime(0.15, actx.currentTime); gain.gain.linearRampToValueAtTime(0, actx.currentTime + 1.2); osc.start(); osc.stop(actx.currentTime + 1.2); }
+
+// --- HỆ THỐNG ÂM THANH QUÁ TẢI (OVERLOAD ROAR) ---
+function playOverloadRoar() { if(!actx) initAudio(); if(overloadOsc) return; overloadOsc = actx.createOscillator(); overloadGain = actx.createGain(); overloadOsc.type = 'sawtooth'; overloadOsc.frequency.setValueAtTime(50, actx.currentTime); overloadOsc.frequency.linearRampToValueAtTime(130, actx.currentTime + 1.5); overloadGain.gain.setValueAtTime(0, actx.currentTime); overloadGain.gain.linearRampToValueAtTime(0.4, actx.currentTime + 0.3); overloadOsc.connect(overloadGain); overloadGain.connect(actx.destination); overloadOsc.start(); }
+function stopOverloadRoar() { if(overloadGain) { overloadGain.gain.exponentialRampToValueAtTime(0.01, actx.currentTime + 0.2); setTimeout(() => { if(overloadOsc) { overloadOsc.stop(); overloadOsc = null; } overloadGain = null; }, 250); } }
+
 function startBuzz() { } function stopBuzz() { } function playZapPop() { }
 
 const hexCanvas = document.getElementById('hexCanvas'); const hexCtx = hexCanvas.getContext('2d'); let hexGrid = []; let canvasW = 0, canvasH = 0;
@@ -71,13 +78,74 @@ function initHexGrid() { hexCanvas.width = window.innerWidth; hexCanvas.height =
 window.addEventListener('resize', initHexGrid); initHexGrid();
 function renderCanvas() { hexCtx.clearRect(0, 0, canvasW, canvasH); hexCtx.lineWidth = 1.2; let isStruggling = document.getElementById('cubeWrapper').classList.contains('overload-active'); for(let hex of hexGrid) { if(isLoggedIn && isStruggling && Math.hypot(hex.x - canvasW/2, hex.y - canvasH*0.516) < 120) hex.energy = Math.random() * 0.9; hex.energy *= 0.88; let alpha = (isLoggedIn ? 0.12 : 0.03) + hex.energy; if(alpha>1) alpha=1; let color = (isStruggling && hex.energy>0.1) ? '255,51,51' : '0,255,136'; hexCtx.strokeStyle = `rgba(${color},${alpha})`; hexCtx.fillStyle = alpha > 0.22 ? `rgba(${color},${(alpha-0.15)*0.3})` : 'transparent'; hexCtx.beginPath(); for (let i=0; i<6; i++) { let a = Math.PI/180*(60*i-30); hexCtx.lineTo(hex.x + 20*Math.cos(a), hex.y + 20*Math.sin(a)); } hexCtx.closePath(); hexCtx.stroke(); if(hexCtx.fillStyle!=='transparent') hexCtx.fill(); } requestAnimationFrame(renderCanvas); }
 renderCanvas();
-window.addEventListener('pointerdown', (e) => { if(!isLoggedIn) return; for(let hex of hexGrid) { if(Math.hypot(hex.x - e.clientX, hex.y - e.clientY) < 45) hex.energy = 0.9; } });
+
+// --- BẮT MẠCH 2 NGÓN TAY (ÉP XUNG LÕI LẬP PHƯƠNG) ---
+const cubeWrapperNode = document.getElementById('cubeWrapper');
+cubeWrapperNode.addEventListener('touchstart', (e) => {
+    if (!isLoggedIn) return;
+    if (e.touches.length === 2) {
+        isPinching = true;
+        initPinchDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+    }
+}, {passive: false});
+
+cubeWrapperNode.addEventListener('touchmove', (e) => {
+    if (!isPinching || e.touches.length !== 2) return;
+    e.preventDefault(); // Chặn cuộn trang
+    let currDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+    let scale = currDist / initPinchDist;
+    if(scale < 1) scale = 1; if(scale > 2.5) scale = 2.5; // Giới hạn biên độ
+    
+    cubeWrapperNode.style.setProperty('--pinch-scale', scale);
+    
+    if(scale > 1.4 && !cubeWrapperNode.classList.contains('overload-active')) {
+        cubeWrapperNode.classList.add('overload-active');
+        playOverloadRoar();
+        if(navigator.vibrate) navigator.vibrate([50, 50, 50, 50]); // Rung dồn dập
+    } else if (scale > 1.4 && cubeWrapperNode.classList.contains('overload-active')) {
+        if(navigator.vibrate && Math.random() > 0.8) navigator.vibrate(20); // Rung duy trì
+    }
+}, {passive: false});
+
+cubeWrapperNode.addEventListener('touchend', (e) => {
+    if (isPinching && e.touches.length < 2) {
+        isPinching = false;
+        cubeWrapperNode.style.setProperty('--pinch-scale', 1);
+        cubeWrapperNode.classList.remove('overload-active');
+        stopOverloadRoar();
+        if(navigator.vibrate) navigator.vibrate(0);
+    }
+});
+
 function triggerHexagonShield() { if(!isLoggedIn) return; for(let hex of hexGrid) { if(Math.hypot(hex.x - window.innerWidth/2, hex.y - window.innerHeight*0.516) < 70) hex.energy = 0.6; } }
 
 let relicEl = document.getElementById('lightningRelic'); let rx = window.innerWidth / 2, ry = window.innerHeight / 2; let targetRx = rx, targetRy = ry; let relicActive = false; let trailTimer = 0; let isRelicCharged = false; 
 function checkDailyEnergy() { return false; }
 function initRelic() { relicActive = true; relicEl.style.display = 'block'; isRelicCharged = checkDailyEnergy(); if (!isRelicCharged) { relicEl.classList.add('relic-active'); relicEl.classList.remove('relic-passive'); startBuzz(); } else { relicEl.classList.add('relic-passive'); relicEl.classList.remove('relic-active'); } moveRelic(); }
-function moveRelic() { if(!relicActive || !isLoggedIn) return; let dx = targetRx - rx; let dy = targetRy - ry; let dist = Math.hypot(dx, dy); if(dist < 50) { targetRx = 40 + Math.random() * (window.innerWidth - 80); targetRy = 40 + Math.random() * (window.innerHeight - 80); } let speed = isRelicCharged ? (0.005 + Math.random() * 0.01) : (0.015 + Math.random() * 0.02); rx += dx * speed; ry += dy * speed; relicEl.style.left = rx + 'px'; relicEl.style.top = ry + 'px'; trailTimer++; let trailFreq = isRelicCharged ? 8 : 4; if(trailTimer % trailFreq === 0) { let trail = document.createElement('div'); trail.className = 'relic-trail'; trail.style.left = rx + 'px'; trail.style.top = ry + 'px'; if (isRelicCharged) { trail.style.boxShadow = '0 0 10px #00ff88, 0 0 20px #00a356'; trail.style.background = '#00ff88'; } else { trail.style.boxShadow = '0 0 10px #00e5ff, 0 0 25px #00e5ff'; trail.style.background = '#ffffff'; } document.body.appendChild(trail); setTimeout(() => { if(trail.parentNode) trail.remove(); }, 800); } requestAnimationFrame(moveRelic); }
+
+// --- QUỸ ĐẠO SÉT HÒM CHẬM RÃI (KHÔNG RANDOM GA) ---
+function moveRelic() { 
+    if(!relicActive || !isLoggedIn) return; 
+    let dx = targetRx - rx; let dy = targetRy - ry; let dist = Math.hypot(dx, dy); 
+    if(dist < 50) { 
+        targetRx = 40 + Math.random() * (window.innerWidth - 80); 
+        targetRy = 40 + Math.random() * (window.innerHeight - 80); 
+    } 
+    let speed = isRelicCharged ? 0.003 : 0.008; // Vận tốc cố định, lơ lửng
+    rx += dx * speed; ry += dy * speed; 
+    relicEl.style.left = rx + 'px'; relicEl.style.top = ry + 'px'; 
+    trailTimer++; let trailFreq = isRelicCharged ? 8 : 4; 
+    if(trailTimer % trailFreq === 0) { 
+        let trail = document.createElement('div'); trail.className = 'relic-trail'; 
+        trail.style.left = rx + 'px'; trail.style.top = ry + 'px'; 
+        if (isRelicCharged) { trail.style.boxShadow = '0 0 10px #00ff88, 0 0 20px #00a356'; trail.style.background = '#00ff88'; } 
+        else { trail.style.boxShadow = '0 0 10px #00e5ff, 0 0 25px #00e5ff'; trail.style.background = '#ffffff'; } 
+        document.body.appendChild(trail); 
+        setTimeout(() => { if(trail.parentNode) trail.remove(); }, 800); 
+    } 
+    requestAnimationFrame(moveRelic); 
+}
+
 function captureRelic() { if(!relicActive) return; if(isMusicPlaying && !isMuted) bgAudio.pause(); if (!isRelicCharged) { let today = new Date().toLocaleDateString(); localStorage.setItem('lastCapturedDate_' + currentUsername, today); isRelicCharged = true; stopBuzz(); playZapPop(); if(navigator.vibrate) navigator.vibrate([100, 50, 200, 50, 100]); let flash = document.getElementById('whiteFlash'); flash.style.display = 'block'; flash.style.opacity = '1'; relicEl.style.transform = `translate(-50%, -50%) scale(5)`; relicEl.style.opacity = '0'; setTimeout(() => { window.location.href = "nhap_the.html"; }, 350); } else { if(navigator.vibrate) navigator.vibrate(50); relicEl.style.transform = `translate(-50%, -50%) scale(1.5)`; relicEl.style.opacity = '0'; setTimeout(() => { window.location.href = "trai_huan_luyen.html"; }, 200); } }
 
 function callAPI(action, params, callbackName, onSuccess, onError) { let finalUrl = API_URL + "?action=" + action; for (let key in params) { finalUrl += "&" + key + "=" + encodeURIComponent(params[key]); } finalUrl += "&callback=" + callbackName; window[callbackName] = function(res) { delete window[callbackName]; let scriptEl = document.getElementById(callbackName); if(scriptEl) document.body.removeChild(scriptEl); if (res && res.success) onSuccess(res); else onError(res ? res.msg : "LỖI MÁY CHỦ!"); }; let script = document.createElement('script'); script.id = callbackName; script.src = finalUrl; script.onerror = function() { onError("LỖI MẠNG!"); }; document.body.appendChild(script); }
@@ -100,14 +168,67 @@ function pulseTerminal(text) { const terminal = document.getElementById('termina
 setInterval(() => { pulseTerminal(isLoggedIn ? "BOO: SHIELD ACTIVE" : "AWAITING KAI RIPE..."); }, 4000);
 function checkLoginGuard() { if (!isLoggedIn) { try { playCyberSound(); } catch(e){} const warningEl = document.getElementById('hudGuardWarning'); if(warningEl) { warningEl.className = "hud-warning-text hud-warning-active"; warningEl.innerHTML = "[ ⚠️ BOO TỪ CHỐI LỆNH! ]"; setTimeout(() => { warningEl.className = "hud-warning-text"; warningEl.innerHTML = ""; }, 2500); } return false; } return true; }
 
+// --- HỆ THỐNG MÁY QUAY & VIDEO (BIẾN HÌNH LÕI) ---
 let capturedVideoUrl = null; let reminderInterval = null; let hasUnreadVideo = false;
-function openSecretCameraGuard(element) { if (!checkLoginGuard()) return; document.getElementById('hiddenCamera').click(); }
+
+function openSecretCameraGuard(element) { 
+    if (!checkLoginGuard()) return; 
+    if(navigator.vibrate) navigator.vibrate(50);
+    try { cameraShutterAudio.play().catch(e=>{}); } catch(e){}
+    
+    let cube = document.getElementById('cubeWrapper');
+    cube.classList.remove('projector-mode');
+    cube.classList.add('camera-mode');
+    
+    setTimeout(() => { document.getElementById('hiddenCamera').click(); }, 400);
+}
+
 function handleVideoUpload(event) { const file = event.target.files[0]; if (file) { capturedVideoUrl = URL.createObjectURL(file); document.getElementById('capturedVideoPlayer').src = capturedVideoUrl; hasUnreadVideo = true; triggerBubble(); } }
 function triggerBubble() { if (!hasUnreadVideo) return; const bubble = document.getElementById('samuraiBubble'); bubble.classList.add('bubble-show'); document.getElementById('bubbleText').innerHTML = "⚠️ MẬT THƯ ĐẾN"; }
-function processSamuraiAction(element) { if (!hasUnreadVideo || !capturedVideoUrl) { triggerHexagonShield(); return; } document.getElementById('videoPopup').classList.add('popup-open'); document.getElementById('capturedVideoPlayer').play(); }
-function closeVideoModule() { document.getElementById('videoPopup').classList.remove('popup-open'); document.getElementById('capturedVideoPlayer').pause(); }
+
+function processSamuraiAction(element) { 
+    if (!hasUnreadVideo || !capturedVideoUrl) { 
+        triggerHexagonShield(); 
+        if(navigator.vibrate) navigator.vibrate(50);
+        return; 
+    } 
+    if(navigator.vibrate) navigator.vibrate([30, 50, 30]);
+    try { playCyberSound(); } catch(e){}
+    
+    let cube = document.getElementById('cubeWrapper');
+    cube.classList.remove('camera-mode');
+    cube.classList.add('projector-mode');
+
+    setTimeout(() => {
+        document.getElementById('videoPopup').classList.add('popup-open'); 
+        document.getElementById('capturedVideoPlayer').play(); 
+    }, 400);
+}
+
+function closeVideoModule() { 
+    document.getElementById('videoPopup').classList.remove('popup-open'); 
+    document.getElementById('capturedVideoPlayer').pause(); 
+    let cube = document.getElementById('cubeWrapper');
+    cube.classList.remove('projector-mode'); 
+}
+
+// --- NÚT CHỜ CHƯA CÓ CHỨC NĂNG (GÂY QUÁ TẢI LÕI) ---
+function triggerStaticNode(element) { 
+    if (!checkLoginGuard()) return; 
+    triggerHexagonShield(); 
+    if(navigator.vibrate) navigator.vibrate(50);
+    
+    let cube = document.getElementById('cubeWrapper');
+    cube.classList.add('overload-active');
+    playOverloadRoar();
+    
+    setTimeout(() => {
+        cube.classList.remove('overload-active');
+        stopOverloadRoar();
+    }, 500);
+}
+
 function rotateWallpapersGuard(element) { currentWallpaperIndex = (currentWallpaperIndex + 1) % base64Wallpapers.length; document.getElementById('kdriveBg').src = base64Wallpapers[currentWallpaperIndex]; }
-function triggerStaticNode(element) { triggerHexagonShield(); }
 function showLoginPanel() { document.getElementById('loginPanelContainer').style.display = 'flex'; lockInteraction(); }
 function closeLoginPanel() { document.getElementById('loginPanelContainer').style.display = 'none'; unlockInteraction(); }
 function showNinjaInfo() { document.getElementById('ninjaPopup').style.display = 'flex'; lockInteraction(); }

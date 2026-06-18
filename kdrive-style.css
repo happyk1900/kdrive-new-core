@@ -133,3 +133,12 @@ body.popups-active .core-system-container { opacity: 0; }
 .relic-trail { position: absolute; width: 8px; height: 8px; border-radius: 50%; box-shadow: 0 0 10px currentColor, 0 0 20px currentColor; pointer-events: none; z-index: 50000; transform: translate(-50%, -50%); animation: fadeTrail 0.8s forwards ease-out; }
 @keyframes fadeTrail { 0% { opacity: 0.9; transform: translate(-50%, -50%) scale(1); } 100% { opacity: 0; transform: translate(-50%, -50%) scale(0.1); filter: blur(2px); } }
 .white-flash-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #ffffff; z-index: 999999; pointer-events: none; opacity: 0; display: none; transition: opacity 0.1s; }
+
+/* --- TRẠNG THÁI BIẾN HÌNH KHỐI LẬP PHƯƠNG --- */
+.cube-wrapper.camera-mode { transform: scaleX(1.5) scaleY(0.6) scaleZ(0.8); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+.cube-wrapper.camera-mode .cube-face { border-color: #00e5ff; box-shadow: inset 0 0 20px #00e5ff, 0 0 10px #00e5ff; background: rgba(0, 229, 255, 0.2); }
+.cube-wrapper.camera-mode .cube-face.front { border-radius: 50%; background: radial-gradient(circle, #000 30%, rgba(0,229,255,0.5) 80%); border: 4px solid #00e5ff; }
+
+.cube-wrapper.projector-mode { transform: scaleZ(2) scaleX(0.8) scaleY(0.8); transition: transform 0.4s ease-in-out; }
+.cube-wrapper.projector-mode .cube-face { border-color: #ffd700; box-shadow: inset 0 0 20px #ffd700, 0 0 15px #ffd700; background: rgba(255, 215, 0, 0.2); }
+.cube-wrapper.projector-mode .cube-face.front { opacity: 0; } /* Mở nắp máy chiếu */

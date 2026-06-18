@@ -134,11 +134,40 @@ body.popups-active .core-system-container { opacity: 0; }
 @keyframes fadeTrail { 0% { opacity: 0.9; transform: translate(-50%, -50%) scale(1); } 100% { opacity: 0; transform: translate(-50%, -50%) scale(0.1); filter: blur(2px); } }
 .white-flash-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #ffffff; z-index: 999999; pointer-events: none; opacity: 0; display: none; transition: opacity 0.1s; }
 
-/* --- TRẠNG THÁI BIẾN HÌNH KHỐI LẬP PHƯƠNG --- */
-.cube-wrapper.camera-mode { transform: scaleX(1.5) scaleY(0.6) scaleZ(0.8); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-.cube-wrapper.camera-mode .cube-face { border-color: #00e5ff; box-shadow: inset 0 0 20px #00e5ff, 0 0 10px #00e5ff; background: rgba(0, 229, 255, 0.2); }
-.cube-wrapper.camera-mode .cube-face.front { border-radius: 50%; background: radial-gradient(circle, #000 30%, rgba(0,229,255,0.5) 80%); border: 4px solid #00e5ff; }
+/* --- SIÊU BIẾN HÌNH LÕI CƠ KHÍ --- */
+/* 1. Chế độ MÁY QUAY (Con mắt điện tử) */
+.cube-wrapper.camera-mode { transform: scale(1.3); transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+.cube-wrapper.camera-mode .cube { animation: none; transform: rotateX(0deg) rotateY(0deg); transition: transform 0.5s; }
+.cube-wrapper.camera-mode .cube-face { border-radius: 50%; opacity: 0; transition: all 0.5s; }
+.cube-wrapper.camera-mode .cube-face.front { 
+    opacity: 1; border: 4px solid #00e5ff; 
+    background: radial-gradient(circle, #001 20%, rgba(0, 229, 255, 0.6) 90%); 
+    box-shadow: 0 0 30px #00e5ff, inset 0 0 20px #00e5ff; 
+    transform: translateZ(10px); 
+}
+/* Mắt đỏ nhấp nháy ghi hình */
+.cube-wrapper.camera-mode .cube-face.front::after { 
+    content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); 
+    width: 18px; height: 18px; border-radius: 50%; background: #ff3333; 
+    box-shadow: 0 0 15px #ff3333; animation: recBlink 1s infinite alternate; 
+}
+@keyframes recBlink { 0% { opacity: 1; transform: translate(-50%, -50%) scale(1); } 100% { opacity: 0.4; transform: translate(-50%, -50%) scale(0.8); } }
 
-.cube-wrapper.projector-mode { transform: scaleZ(2) scaleX(0.8) scaleY(0.8); transition: transform 0.4s ease-in-out; }
-.cube-wrapper.projector-mode .cube-face { border-color: #ffd700; box-shadow: inset 0 0 20px #ffd700, 0 0 15px #ffd700; background: rgba(255, 215, 0, 0.2); }
-.cube-wrapper.projector-mode .cube-face.front { opacity: 0; } /* Mở nắp máy chiếu */
+/* 2. Chế độ MÁY CHIẾU (Mở nắp, phóng Hologram) */
+.cube-wrapper.projector-mode { transform: scale(1.2) translateY(15px); transition: all 0.5s ease; }
+.cube-wrapper.projector-mode .cube { animation: none; transform: rotateX(-15deg) rotateY(45deg); transition: transform 0.5s; }
+.cube-wrapper.projector-mode .cube-face { 
+    border-color: #ffd700; background: rgba(255, 215, 0, 0.1); 
+    box-shadow: inset 0 0 15px rgba(255, 215, 0, 0.4); transition: all 0.5s; 
+}
+/* Bật nắp máy chiếu */
+.cube-wrapper.projector-mode .cube-face.top { 
+    transform: rotateX(90deg) translateZ(35px) rotateY(-110deg); 
+    transform-origin: top; background: transparent; border-color: rgba(255,215,0,0.8); 
+}
+/* Chùm tia phát sáng */
+.projector-beam.beam-on { 
+    opacity: 1; border-bottom: 120px solid rgba(255, 215, 0, 0.4); 
+    filter: blur(5px); animation: flickerBeam 0.1s infinite alternate; 
+}
+@keyframes flickerBeam { from { opacity: 0.8; filter: blur(4px); } to { opacity: 1; filter: blur(7px); } }

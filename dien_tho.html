@@ -10,7 +10,7 @@
         body { background-color: #050505; height: 100vh; width: 100vw; display: flex; justify-content: center; align-items: center; overflow: hidden; font-family: 'Space Grotesk', sans-serif; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; overscroll-behavior: none; }
         input, select { user-select: auto !important; -webkit-user-select: auto !important; touch-action: auto !important; pointer-events: auto !important; }
 
-        /* --- 1. LỚP MA TRẬN NẰM DƯỚI CÙNG --- */
+        /* --- LỚP MA TRẬN NẰM DƯỚI CÙNG --- */
         #matrixCanvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 0; opacity: 0.35; pointer-events: none; }
 
         .kdrive-bg-target { width: 100%; height: 100%; object-fit: fill; position: absolute; z-index: 1; opacity: 0.15; filter: blur(4px) grayscale(100%) brightness(0.5); }
@@ -18,75 +18,102 @@
         #hexCanvas { width: 100%; height: 100%; display: block; }
 
         /* MÀN HÌNH CHỜ THỈNH THẦN */
-        .thantai-preview-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(5, 5, 5, 0.85); backdrop-filter: blur(8px); z-index: 45000; display: flex; flex-direction: column; justify-content: center; align-items: center; opacity: 1; transition: opacity 0.4s; -webkit-touch-callout: none !important; user-select: none !important; }
+        .thantai-preview-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(5, 5, 5, 0.85); backdrop-filter: blur(8px); z-index: 45000; display: flex; flex-direction: column; justify-content: center; align-items: center; opacity: 1; transition: opacity 0.4s; }
         .big-thantai-img { width: 300px; max-width: 85vw; filter: drop-shadow(0 0 20px rgba(128, 128, 128, 0.5)); animation: levitateGod 3s ease-in-out infinite; cursor: pointer; pointer-events: none; }
         @keyframes levitateGod { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); filter: drop-shadow(0 0 35px rgba(210, 210, 210, 0.6)); } }
         .summon-text { margin-top: 30px; font-family: 'Share Tech Mono', monospace; font-size: 16px; color: #808080; text-shadow: 0 0 10px #808080; letter-spacing: 2px; pointer-events: none; animation: pulseAlpha 1.5s infinite; }
         @keyframes pulseAlpha { 0%, 100% { opacity: 1; filter: drop-shadow(0 0 10px #808080); } 50% { opacity: 0.5; filter: drop-shadow(0 0 20px #808080); } }
 
-        /* KHUNG ĐIỆN THỜ */
+        /* KHUNG ĐIỆN THỜ (ĐÃ XÓA VIỀN) */
         .altar-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(5,5,5,0.85); backdrop-filter: blur(8px); z-index: 50000; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: 0.4s cubic-bezier(0.1, 0.8, 0.3, 1); }
         .altar-overlay.active { opacity: 1; pointer-events: auto; }
         
         .altar-panel { 
-            background: linear-gradient(135deg, rgba(15,15,15,0.95), rgba(5,5,5,0.98));
-            border: 1px solid rgba(128,128,128,0.2); 
-            box-shadow: 0 0 40px rgba(0,0,0,0.9), inset 0 0 20px rgba(128,128,128,0.05);
+            background: linear-gradient(135deg, rgba(15,15,15,0.9), rgba(5,5,5,0.95));
+            border: none; /* Bỏ viền khung chính */
+            box-shadow: inset 0 0 30px rgba(0,0,0,0.8); /* Chỉ giữ lại bóng đổ chìm */
             width: 92%; max-width: 380px; padding: 20px; position: relative; max-height: 85vh; overflow-y: auto; overflow-x: hidden;
             clip-path: polygon(15px 0%, calc(100% - 15px) 0%, 100% 15px, 100% calc(100% - 15px), calc(100% - 15px) 100%, 15px 100%, 0% calc(100% - 15px), 0% 15px);
         }
         .altar-panel::-webkit-scrollbar { width: 4px; }
-        .altar-panel::-webkit-scrollbar-thumb { background: #808080; border-radius: 4px; }
+        .altar-panel::-webkit-scrollbar-thumb { background: #555; border-radius: 4px; }
         
-        /* --- 2. BÁT QUÁI XOAY (Đã tăng sáng để hiển thị rõ) --- */
+        /* BÁT QUÁI XOAY */
         .altar-panel::after { 
             content: ''; position: absolute; top: 50%; left: 50%; width: 280px; height: 280px; 
             background-image: url('https://upload.wikimedia.org/wikipedia/commons/0/07/Bagua_Taijitu.svg');
             background-size: contain; background-repeat: no-repeat; background-position: center;
-            opacity: 0.25; pointer-events: none; z-index: 0; filter: invert(1);
+            opacity: 0.2; pointer-events: none; z-index: 0; filter: invert(1);
             animation: spinBaguaCore 15s linear infinite;
         }
         @keyframes spinBaguaCore { 0% { transform: translate(-50%, -50%) rotate(0deg); } 100% { transform: translate(-50%, -50%) rotate(360deg); } }
         
         .altar-panel > * { position: relative; z-index: 1; }
-        .altar-panel::before { content: 'NEURAL ALTAR'; position: absolute; top: -10px; left: 25px; background: #050505; padding: 0 10px; font-family: 'Share Tech Mono', monospace; font-size: 12px; color: #808080; letter-spacing: 2px; z-index: 2;}
-        .altar-title { font-family: 'Share Tech Mono', monospace; color: #808080; font-size: 15px; margin-bottom: 10px; border-bottom: 1px dashed rgba(128,128,128,0.3); padding-bottom: 5px; text-shadow: 0 0 5px rgba(128,128,128,0.5); }
-        .altar-info { font-family: 'Space Grotesk', sans-serif; font-size: 12px; color: #808080; line-height: 1.4; margin-bottom: 10px; }
+        .altar-panel::before { content: 'NEURAL ALTAR'; position: absolute; top: -10px; left: 25px; background: transparent; padding: 0 10px; font-family: 'Share Tech Mono', monospace; font-size: 12px; color: #555; letter-spacing: 2px; z-index: 2;}
+        .altar-title { font-family: 'Share Tech Mono', monospace; color: #808080; font-size: 15px; margin-bottom: 10px; border-bottom: 1px solid rgba(128,128,128,0.2); padding-bottom: 5px; text-shadow: 0 0 5px rgba(128,128,128,0.3); }
+        .altar-info { font-family: 'Space Grotesk', sans-serif; font-size: 12px; color: #808080; line-height: 1.5; margin-bottom: 15px; }
         .altar-info .highlight { color: #d2d2d2; font-weight: bold; }
         
-        .input-box { margin-bottom: 8px; display: flex; flex-direction: column; transition: 0.3s; }
-        .input-box label { font-family: 'Share Tech Mono', monospace; font-size: 11px; color: #808080; margin-bottom: 6px; text-transform: uppercase; }
-        .input-box input, .input-box select { background: rgba(5,5,5,0.8); border: 1px solid rgba(128,128,128,0.3); padding: 10px; color: #d2d2d2; font-family: 'Space Grotesk', sans-serif; font-size: 13px; border-radius: 4px; outline: none; transition: 0.3s;}
-        .input-box input:focus, .input-box select:focus { border-color: #808080; box-shadow: 0 0 8px rgba(128,128,128,0.3); }
+        /* Ô NHẬP LIỆU (ĐÃ BỎ KHUNG, CHỈ CÒN ĐƯỜNG KẺ DƯỚI) */
+        .input-box { margin-bottom: 12px; display: flex; flex-direction: column; transition: 0.3s; }
+        .input-box label { font-family: 'Share Tech Mono', monospace; font-size: 11px; color: #808080; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 1px;}
+        .input-box input, .input-box select { 
+            background: transparent; /* Nền trong suốt */
+            border: none; /* Bỏ viền */
+            border-bottom: 1px dashed rgba(128,128,128,0.5); /* Chỉ giữ đường đứt nét dưới */
+            padding: 8px 0; 
+            color: #d2d2d2; 
+            font-family: 'Space Grotesk', sans-serif; 
+            font-size: 14px; 
+            border-radius: 0; 
+            outline: none; 
+            transition: 0.3s;
+        }
+        .input-box input:focus, .input-box select:focus { border-bottom-color: #d2d2d2; text-shadow: 0 0 5px rgba(210,210,210,0.5); }
+        .input-box select option { background: #111; color: #ccc; }
         
-        .compass-wrapper { width: 80px; height: 80px; margin: 2px auto; background: rgba(10,10,10,0.8); position: relative; cursor: crosshair; overflow: hidden; transition: 0.3s; clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%); border: 2px solid rgba(128,128,128,0.4); box-shadow: 0 0 15px rgba(128,128,128,0.2), inset 0 0 10px rgba(128,128,128,0.2); }
-        .compass-wrapper.scanning { border-color: #d2d2d2; box-shadow: 0 0 20px rgba(210,210,210,0.6), inset 0 0 15px rgba(210,210,210,0.4); }
+        /* LA BÀN (ĐÃ BỎ KHUNG, TRÔI LƠ LỬNG) */
+        .compass-wrapper { 
+            width: 80px; height: 80px; margin: 10px auto; 
+            background: transparent; /* Nền trong suốt */
+            position: relative; cursor: crosshair; overflow: hidden; transition: 0.3s; 
+            border: none; /* Bỏ khung la bàn */
+        }
+        .compass-wrapper.scanning { filter: drop-shadow(0 0 10px rgba(210,210,210,0.3)); }
         .compass-dial { width: 100%; height: 100%; position: absolute; top: 0; left: 0; transition: transform 0.1s ease-out; }
-        .compass-dial span { position: absolute; font-family: 'Share Tech Mono', monospace; font-weight: bold; color: #808080; font-size: 11px; text-shadow: 0 0 5px #808080; }
+        .compass-dial span { position: absolute; font-family: 'Share Tech Mono', monospace; font-weight: bold; color: #808080; font-size: 12px; text-shadow: 0 0 5px #808080; }
         .dir-n { top: 2px; left: 50%; transform: translateX(-50%); color: #ff3333 !important; text-shadow: 0 0 5px #ff3333 !important; }
         .dir-s { bottom: 2px; left: 50%; transform: translateX(-50%); }
         .dir-e { top: 50%; right: 4px; transform: translateY(-50%); }
         .dir-w { top: 50%; left: 4px; transform: translateY(-50%); }
-        .compass-pointer { position: absolute; top: 50%; left: 50%; width: 3px; height: 35px; background: #ff3333; transform: translate(-50%, -100%); box-shadow: 0 0 8px #ff3333; clip-path: polygon(50% 0%, 100% 100%, 0% 100%); z-index: 2; pointer-events: none; }
-        .compass-status { text-align: center; color: #808080; font-family: 'Share Tech Mono', monospace; font-size: 10px; margin-top: 5px; font-weight: bold; cursor: pointer; text-shadow: 0 0 5px rgba(128,128,128,0.5); }
+        .compass-pointer { position: absolute; top: 50%; left: 50%; width: 2px; height: 35px; background: #ff3333; transform: translate(-50%, -100%); box-shadow: 0 0 8px #ff3333; clip-path: polygon(50% 0%, 100% 100%, 0% 100%); z-index: 2; pointer-events: none; }
+        .compass-status { text-align: center; color: #808080; font-family: 'Share Tech Mono', monospace; font-size: 10px; margin-top: 5px; font-weight: normal; cursor: pointer; }
 
-        .poker-table-hologram { width: 100%; height: 80px; margin: 10px 0 5px 0; position: relative; display: flex; justify-content: center; align-items: center; }
-        .table-surface { width: 180px; height: 60px; border: 2px solid rgba(128, 128, 128, 0.4); border-radius: 30px; background: rgba(128, 128, 128, 0.05); box-shadow: inset 0 0 15px rgba(128,128,128,0.1), 0 0 10px rgba(128,128,128,0.1); position: relative; }
-        .table-surface::after { content: 'NEURAL RING'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-family: 'Share Tech Mono', monospace; font-size: 12px; color: rgba(128, 128, 128, 0.3); letter-spacing: 2px; pointer-events: none; }
-        .seat { position: absolute; width: 20px; height: 20px; background: rgba(5, 5, 5, 0.9); border: 1px solid #808080; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 10px; font-family: 'Share Tech Mono', monospace; color: #808080; cursor: pointer; box-shadow: 0 0 5px rgba(128, 128, 128, 0.5); transition: 0.2s; z-index: 2; transform: translate(-50%, -50%); }
-        .seat.selected { background: #d2d2d2; border-color: #d2d2d2; color: #000; font-weight: bold; box-shadow: 0 0 15px #d2d2d2; transform: translate(-50%, -50%) scale(1.15); }
+        /* BÀN POKER (ĐÃ BỎ KHUNG, CHỈ CÒN CÁC VỊ TRÍ GHẾ) */
+        .poker-table-hologram { width: 100%; height: 80px; margin: 15px 0 5px 0; position: relative; display: flex; justify-content: center; align-items: center; }
+        .table-surface { 
+            width: 180px; height: 60px; 
+            border: none; /* Bỏ viền bàn */
+            background: transparent; /* Nền trong suốt */
+            position: relative; 
+        }
+        .table-surface::after { content: 'NEURAL RING'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-family: 'Share Tech Mono', monospace; font-size: 11px; color: rgba(128, 128, 128, 0.2); letter-spacing: 2px; pointer-events: none; }
+        .seat { position: absolute; width: 22px; height: 22px; background: #0a0a0a; border: 1px dashed #555; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 10px; font-family: 'Share Tech Mono', monospace; color: #808080; cursor: pointer; transition: 0.2s; z-index: 2; transform: translate(-50%, -50%); }
+        .seat.selected { background: transparent; border: 1px solid #d2d2d2; color: #d2d2d2; font-weight: bold; box-shadow: 0 0 10px rgba(210,210,210,0.5); transform: translate(-50%, -50%) scale(1.15); }
         .s1 { left: 25%; top: 100%; } .s2 { left: 0%; top: 50%; } .s3 { left: 20%; top: 0%; } .s4 { left: 40%; top: 0%; } .s5 { left: 60%; top: 0%; } .s6 { left: 80%; top: 0%; } .s7 { left: 100%; top: 50%; } .s8 { left: 75%; top: 100%; } .s9 { left: 50%; top: 100%; }
-        .seat-status { text-align: center; color: #808080; font-family: 'Share Tech Mono', monospace; font-size: 11px; margin-top: 8px; font-weight: bold; text-shadow: 0 0 5px rgba(128,128,128,0.5); }
+        .seat-status { text-align: center; color: #808080; font-family: 'Share Tech Mono', monospace; font-size: 11px; margin-top: 8px; font-weight: normal; }
 
-        .login-btn-submit { padding: 12px 25px; background: linear-gradient(90deg, #333, #555); color: #fff; font-weight: 800; font-size: 16px; border: none; border-radius: 10px; cursor: pointer; width: 100%; font-family: 'Space Grotesk', sans-serif; box-shadow: 0 0 15px rgba(80, 80, 80, 0.3); transition: all 0.3s; border: 1px solid #808080; }
-        .login-btn-submit:hover { box-shadow: 0 0 25px rgba(128, 128, 128, 0.8); transform: scale(1.02); }
+        /* NÚT BẤM (GỌN GÀNG, KHÔNG KHUNG CỨNG) */
+        .login-btn-submit { padding: 12px 25px; background: transparent; color: #a0a0a0; font-weight: 600; font-size: 14px; border: 1px dashed #555; border-radius: 4px; cursor: pointer; width: 100%; font-family: 'Space Grotesk', sans-serif; transition: all 0.3s; letter-spacing: 1px;}
+        .login-btn-submit:hover { background: rgba(128,128,128,0.1); border-color: #d2d2d2; color: #d2d2d2; }
+        .login-btn-submit.active-btn { border-style: solid; background: rgba(210,210,210,0.1); color: #d2d2d2; border-color: #d2d2d2; }
         
-        .close-btn { position: absolute; top: -15px; right: -15px; width: 36px; height: 36px; background: #050505; border: 2px solid #808080; border-radius: 50%; color: #808080; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; z-index: 35001; box-shadow: 0 0 15px rgba(128, 128, 128, 0.5); transition: 0.3s;}
-        .close-btn:hover { transform: scale(1.1); background: #808080; color: #000; }
+        .close-btn { position: absolute; top: -15px; right: -15px; width: 36px; height: 36px; background: #050505; border: 1px solid #555; border-radius: 50%; color: #808080; font-weight: normal; cursor: pointer; display: flex; justify-content: center; align-items: center; z-index: 35001; transition: 0.3s;}
+        .close-btn:hover { background: rgba(128,128,128,0.2); color: #d2d2d2; border-color: #d2d2d2; }
         .btn-back-home { position: absolute; top: 20px; left: 20px; color: #808080; font-weight: bold; text-shadow: 0 0 10px #808080; cursor: pointer; z-index: 60000; font-family: 'Share Tech Mono', monospace; font-size: 14px; text-decoration: underline; }
 
-        .incense-container { display: flex; justify-content: center; gap: 20px; margin: 10px 0; height: 35px; position: relative; }
-        .laser-stick { width: 3px; height: 100%; background: rgba(128,128,128,0.2); transition: 0.5s; position: relative; border-radius: 2px; }
+        .incense-container { display: flex; justify-content: center; gap: 20px; margin: 15px 0; height: 35px; position: relative; }
+        .laser-stick { width: 2px; height: 100%; background: rgba(128,128,128,0.1); transition: 0.5s; position: relative; border-radius: 2px; }
         .laser-stick.ignited { background: #d2d2d2; box-shadow: 0 0 12px #d2d2d2, 0 0 25px #fff; animation: burnDown 10s linear forwards; }
         @keyframes burnDown { 100% { height: 10%; opacity: 0.5; } }
     </style>
@@ -143,26 +170,26 @@
             </div>
 
             <div id="btnDoiBanWrapper" style="display: none; text-align: center; margin: 10px 0;">
-                <button class="login-btn-submit" style="background: rgba(128, 128, 128, 0.1); border: 1px dashed #808080; color: #808080; padding: 10px; font-size: 12px; box-shadow: none;" onclick="startChangeTable()">[ 🔄 XÁC NHẬN PHONG THỦY ]</button>
+                <button class="login-btn-submit" onclick="startChangeTable()">[ 🔄 XÁC NHẬN PHONG THỦY ]</button>
             </div>
 
-            <div id="altarStage1_TaiChinh" style="display: flex; gap: 10px; margin-top: 5px;">
+            <div id="altarStage1_TaiChinh" style="display: flex; gap: 15px; margin-top: 10px;">
                 <div class="input-box" style="flex: 1; margin-bottom: 0;">
                     <label>3. SỐ MẠNG</label>
-                    <select id="inpLives" style="padding: 8px; background: rgba(5,5,5,0.8); border: 1px solid rgba(128,128,128,0.3); color: #d2d2d2; font-family: 'Space Grotesk', sans-serif; border-radius: 4px; outline: none; font-size: 12px;">
+                    <select id="inpLives">
                         <option value="Mạng 1">Mạng 1</option><option value="Mạng 2">Mạng 2</option><option value="Mạng 3">Mạng 3</option><option value="Mạng 4">Mạng 4</option><option value="Mạng 5">Mạng 5</option>
                     </select>
                 </div>
                 <div class="input-box" style="flex: 1.5; margin-bottom: 0;">
                     <label>4. TIỀN VỐN</label>
-                    <input type="text" id="inpBuyIn" placeholder="VD: 10,000" style="padding: 8px;" oninput="formatCurrency(this)">
+                    <input type="text" id="inpBuyIn" placeholder="VD: 10,000" oninput="formatCurrency(this)">
                 </div>
             </div>
 
             <div id="altarStage2" style="display: none;">
-                <div class="input-box" style="margin-top: 15px;">
-                    <label style="color: #d2d2d2; border-bottom: 1px dashed #808080; padding-bottom: 5px;">5. KẾT THÚC (ÂM HAY DƯƠNG BAO NHIÊU)</label>
-                    <input type="text" id="inpLoss" placeholder="VD: +5,000 hoặc -5,000" style="padding: 10px; font-weight: bold; color: #d2d2d2; border-color: #808080;" oninput="formatCurrency(this)">
+                <div class="input-box" style="margin-top: 20px;">
+                    <label style="color: #d2d2d2;">5. KẾT THÚC (ÂM HAY DƯƠNG BAO NHIÊU)</label>
+                    <input type="text" id="inpLoss" placeholder="VD: +5,000 hoặc -5,000" style="font-weight: bold; color: #d2d2d2;" oninput="formatCurrency(this)">
                 </div>
             </div>
 
@@ -170,12 +197,11 @@
                 <div class="laser-stick" id="inc1"></div><div class="laser-stick" id="inc2"></div><div class="laser-stick" id="inc3"></div>
             </div>
 
-            <button class="login-btn-submit" id="btnThapNhang" onclick="executeRitual()">[ THẮP NHANG & XUẤT TRẬN ]</button>
+            <button class="login-btn-submit active-btn" id="btnThapNhang" onclick="executeRitual()">[ THẮP NHANG & XUẤT TRẬN ]</button>
         </div>
     </div>
 
     <script>
-        // --- 3. LOGIC MA TRẬN 60 BPM ---
         const mCanvas = document.getElementById('matrixCanvas');
         if (mCanvas) {
             const mCtx = mCanvas.getContext('2d');
@@ -185,7 +211,7 @@
             function drawMatrix() {
                 mCtx.fillStyle = "rgba(5, 5, 5, 0.15)";
                 mCtx.fillRect(0, 0, mCanvas.width, mCanvas.height);
-                mCtx.fillStyle = "#888888"; // Đẩy độ sáng lên để chữ hiện rõ hơn
+                mCtx.fillStyle = "#888888";
                 mCtx.font = "14px monospace";
                 drops.forEach((y, i) => {
                     const text = mChars[Math.floor(Math.random()*mChars.length)];
@@ -194,10 +220,9 @@
                     drops[i]++;
                 });
             }
-            setInterval(drawMatrix, 1000); // Rơi 1 lần mỗi giây
+            setInterval(drawMatrix, 1000); 
         }
 
-        // --- 4. NHẠC THỈNH THẦN ---
         const templeAudio = new Audio("https://github.com/happyk1900/anh-va-nhac-tram-huan-luyen-chien-binh-/raw/refs/heads/main/Temple%20of%20Zero%20dien%20tho.mp3");
         templeAudio.loop = true;
 
@@ -224,11 +249,13 @@
             let btn = document.getElementById('btnThapNhang');
             let boxIncense = document.getElementById('incenseBox');
             if(savedSession) {
-                document.getElementById('altarStage1_PhongThuy').style.opacity = '0.4'; document.getElementById('altarStage1_PhongThuy').style.pointerEvents = 'none'; document.getElementById('altarStage1_TaiChinh').style.opacity = '0.4'; document.getElementById('altarStage1_TaiChinh').style.pointerEvents = 'none';
+                document.getElementById('altarStage1_PhongThuy').style.display = 'none';
+                document.getElementById('altarStage1_TaiChinh').style.display = 'none';
                 document.getElementById('altarStage2').style.display = 'block'; document.getElementById('btnDoiBanWrapper').style.display = 'block'; boxIncense.style.display = 'none';
                 btn.innerHTML = "[ TẠ LỄ & LƯU SỔ SINH TỬ ]"; btn.onclick = finishRitual; 
             } else {
-                document.getElementById('altarStage1_PhongThuy').style.opacity = '1'; document.getElementById('altarStage1_PhongThuy').style.pointerEvents = 'auto'; document.getElementById('altarStage1_TaiChinh').style.opacity = '1'; document.getElementById('altarStage1_TaiChinh').style.pointerEvents = 'auto';
+                document.getElementById('altarStage1_PhongThuy').style.display = 'block';
+                document.getElementById('altarStage1_TaiChinh').style.display = 'flex';
                 document.getElementById('altarStage2').style.display = 'none'; document.getElementById('btnDoiBanWrapper').style.display = 'none'; boxIncense.style.display = 'flex'; 
                 document.getElementById('inc1').classList.remove('ignited'); document.getElementById('inc2').classList.remove('ignited'); document.getElementById('inc3').classList.remove('ignited');
                 btn.innerHTML = "[ THẮP NHANG & XUẤT TRẬN ]"; btn.onclick = executeRitual;
@@ -236,7 +263,8 @@
         }
 
         function startChangeTable() {
-            document.getElementById('altarStage1_PhongThuy').style.opacity = '1'; document.getElementById('altarStage1_PhongThuy').style.pointerEvents = 'auto'; document.getElementById('altarStage2').style.display = 'none'; document.getElementById('btnDoiBanWrapper').style.display = 'none';
+            document.getElementById('altarStage1_PhongThuy').style.display = 'block';
+            document.getElementById('altarStage2').style.display = 'none'; document.getElementById('btnDoiBanWrapper').style.display = 'none';
             let btn = document.getElementById('btnThapNhang'); btn.innerHTML = "[ XÁC NHẬN PHONG THỦY ]"; btn.onclick = saveNewTable; 
         }
 
@@ -248,13 +276,12 @@
                 localStorage.setItem('kdrive_altar_session_' + currentUsername, JSON.stringify(sessionData));
                 document.getElementById('inpFacing').value = "Chưa đồng bộ"; document.getElementById('inpPosition').value = "Chưa đồng bộ";
                 document.getElementById('compassStatus').innerText = "[ ĐÃ CỘNG DỒN LỊCH SỬ ]"; document.getElementById('seatStatus').innerText = "[ ĐÃ CỘNG DỒN VỊ TRÍ ]";
-                let btn = document.getElementById('btnThapNhang'); btn.innerHTML = "[ CẬP NHẬT THÀNH CÔNG ✓ ]"; btn.style.background = "#d2d2d2"; btn.style.color = "#000";
-                setTimeout(() => { checkAltarState(); }, 1500);
+                let btn = document.getElementById('btnThapNhang'); btn.innerHTML = "[ CẬP NHẬT THÀNH CÔNG ✓ ]"; btn.classList.remove('active-btn');
+                setTimeout(() => { checkAltarState(); btn.classList.add('active-btn'); }, 1500);
             }
         }
 
         function openAltarForm() {
-            // MỞ NHẠC KHI ẤN VÀO MÀN HÌNH CHỜ
             templeAudio.play().catch(e => console.log("Trình duyệt chặn Audio"));
             
             const preview = document.getElementById('thantaiPreviewOverlay'); preview.style.display = 'none';
@@ -318,15 +345,15 @@
         function executeRitual() {
             const btn = document.getElementById('btnThapNhang');
             if(document.getElementById('inpFacing').value === 'Chưa đồng bộ' || !document.getElementById('inpBuyIn').value) {
-                btn.innerText = "[ ĐIỀN THIẾU THÔNG TIN ]"; btn.style.background = "#ff3333";
-                setTimeout(() => { btn.innerText = "[ THẮP NHANG & XUẤT TRẬN ]"; btn.style.background = "linear-gradient(90deg, #333, #555)"; }, 1500); return;
+                btn.innerText = "[ ĐIỀN THIẾU THÔNG TIN ]"; btn.style.borderColor = "#ff3333"; btn.style.color = "#ff3333";
+                setTimeout(() => { btn.innerText = "[ THẮP NHANG & XUẤT TRẬN ]"; btn.style.borderColor = "#d2d2d2"; btn.style.color = "#d2d2d2"; }, 1500); return;
             }
             btn.disabled = true; btn.innerText = "[ ĐANG KẾT NỐI TÂM LINH... ]";
             const sessionData = { lunarDate: document.getElementById('lblLunar').innerText, zodiacHour: document.getElementById('lblZodiac').innerText, facing: document.getElementById('inpFacing').value, position: document.getElementById('inpPosition').value, buyIn: document.getElementById('inpLives').value + " - Vốn: " + document.getElementById('inpBuyIn').value, aiEvaluation: "Buff: " + document.getElementById('lblBuff').innerText };
             localStorage.setItem('kdrive_altar_session_' + currentUsername, JSON.stringify(sessionData));
             document.getElementById('inc1').classList.add('ignited'); document.getElementById('inc2').classList.add('ignited'); document.getElementById('inc3').classList.add('ignited');
             if(navigator.vibrate) navigator.vibrate([100, 50, 100]);
-            btn.innerText = "[ ĐÃ THỈNH THẦN ✓ ]"; btn.style.background = "#d2d2d2"; btn.style.color = "#000";
+            btn.innerText = "[ ĐÃ THỈNH THẦN ✓ ]"; btn.style.background = "rgba(210,210,210,0.1)"; btn.style.color = "#d2d2d2";
             setTimeout(() => { window.location.href = 'index.html'; }, 2200);
         }
 
@@ -339,9 +366,9 @@
             .then(() => {
                 localStorage.removeItem('kdrive_altar_session_' + currentUsername);
                 if(navigator.vibrate) navigator.vibrate([100, 50, 100]);
-                btn.innerText = "[ ĐÃ KHÓA SỔ THÀNH CÔNG ✓ ]"; btn.style.background = "#d2d2d2"; btn.style.color = "#000";
+                btn.innerText = "[ ĐÃ KHÓA SỔ THÀNH CÔNG ✓ ]"; btn.style.background = "rgba(210,210,210,0.1)"; btn.style.color = "#d2d2d2";
                 setTimeout(() => { window.location.href = 'index.html'; }, 2200);
-            }).catch(err => { btn.disabled = false; btn.innerText = "[ LỖI KẾT NỐI - THỬ LẠI ]"; btn.style.background = "#ff3333"; });
+            }).catch(err => { btn.disabled = false; btn.innerText = "[ LỖI KẾT NỐI - THỬ LẠI ]"; btn.style.borderColor = "#ff3333"; btn.style.color = "#ff3333"; });
         }
     </script>
 </body>

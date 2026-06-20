@@ -11,68 +11,88 @@
         input, select { user-select: auto !important; -webkit-user-select: auto !important; touch-action: auto !important; pointer-events: auto !important; }
 
         /* MA TRẬN XÁM TRẮNG NỔI SÁNG */
-        #matrixCanvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 0; opacity: 0.8; pointer-events: none; }
+        #matrixCanvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 0; opacity: 0.85; pointer-events: none; }
         
         /* KHÓI MỜ NỀN */
         .ambient-smoke { position: fixed; top: 0; left: 0; width: 200vw; height: 100vh; background: url('https://raw.githubusercontent.com/happyk1900/anh-va-nhac-tram-huan-luyen-chien-binh-/main/smoke-texture.png') repeat-x; background-size: auto 100%; opacity: 0.15; z-index: 1; pointer-events: none; animation: driftSmoke 60s linear infinite; filter: blur(5px); mix-blend-mode: screen; }
         @keyframes driftSmoke { 0% { transform: translateX(0); } 100% { transform: translateX(-50vw); } }
 
         /* NÚT ĐIỀU HƯỚNG BẢO LƯU TIẾNG ANH */
-        .btn-return-lobby { position: absolute; top: 25px; left: 25px; color: #888; font-weight: bold; cursor: pointer; z-index: 60000; font-family: 'Share Tech Mono', monospace; font-size: 13px; text-decoration: none; text-transform: uppercase; letter-spacing: 2px; transition: 0.3s; text-shadow: 0 0 5px #000; }
-        .btn-return-lobby:hover { color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
+        .btn-return-lobby { position: absolute; top: 25px; left: 25px; color: #888; font-weight: bold; cursor: pointer; z-index: 60000; font-family: 'Share Tech Mono', monospace; font-size: 13px; text-decoration: none; text-transform: uppercase; letter-spacing: 2px; transition: 0.3s; text-shadow: 0 0 10px #000, 0 0 5px #000; }
+        .btn-return-lobby:hover { color: #fff; text-shadow: 0 0 15px rgba(255,255,255,0.6), 0 0 5px #000; }
 
         /* SẢNH CHỜ THẦN TÀI */
         .thantai-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: radial-gradient(circle at center, rgba(15,15,15,0.9) 0%, #000 100%); z-index: 45000; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 1.5s ease-in-out, visibility 1.5s; }
-        .big-thantai-img { width: 320px; max-width: 85vw; filter: drop-shadow(0 0 20px rgba(218, 165, 32, 0.1)) grayscale(10%); animation: levitateGod 4s ease-in-out infinite; cursor: pointer; }
-        @keyframes levitateGod { 0%, 100% { transform: translateY(0) scale(1); filter: drop-shadow(0 0 20px rgba(218, 165, 32, 0.1)) grayscale(10%); } 50% { transform: translateY(-10px) scale(1.02); filter: drop-shadow(0 0 40px rgba(218, 165, 32, 0.4)) grayscale(0%); } }
-        .summon-text { margin-top: 40px; font-family: 'Space Grotesk', sans-serif; font-size: 16px; color: #DAA520; text-shadow: 0 0 15px rgba(218,165,32,0.5); letter-spacing: 3px; pointer-events: none; animation: pulseAlpha 2s infinite; font-weight: 500; }
+        .big-thantai-img { width: 320px; max-width: 85vw; filter: drop-shadow(0 0 20px rgba(218, 165, 32, 0.15)) grayscale(10%); animation: levitateGod 4s ease-in-out infinite; cursor: pointer; }
+        @keyframes levitateGod { 0%, 100% { transform: translateY(0) scale(1); filter: drop-shadow(0 0 20px rgba(218, 165, 32, 0.15)) grayscale(10%); } 50% { transform: translateY(-10px) scale(1.02); filter: drop-shadow(0 0 40px rgba(218, 165, 32, 0.4)) grayscale(0%); } }
+        .summon-text { margin-top: 40px; font-family: 'Space Grotesk', sans-serif; font-size: 16px; color: #DAA520; text-shadow: 0 0 15px rgba(218,165,32,0.5), 0 0 5px #000; letter-spacing: 3px; pointer-events: none; animation: pulseAlpha 2s infinite; font-weight: 500; }
         @keyframes pulseAlpha { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
 
-        /* ĐIỆN THỜ TRONG SUỐT (NHÌN THẤU MA TRẬN) */
+        /* ĐIỆN THỜ TRONG SUỐT HOÀN TOÀN (VÔ ẢNH) */
         .altar-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: transparent; z-index: 50000; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: 1.5s ease; }
         .altar-overlay.active { opacity: 1; visibility: visible; }
         .altar-panel { width: 95%; max-width: 420px; padding: 20px; position: relative; height: 85vh; overflow-y: auto; overflow-x: hidden; scrollbar-width: none; }
         .altar-panel::-webkit-scrollbar { display: none; }
         
-        /* SHADOW BẢO VỆ CHỮ TRÊN NỀN MA TRẬN */
-        .altar-panel > * { position: relative; z-index: 1; text-shadow: 0 0 8px #000, 0 0 15px #000, 1px 1px 2px #000; }
+        /* ĐỔ BÓNG CHÌM BẢO VỆ CHỮ TRÊN NỀN MA TRẬN */
+        .altar-panel > * { position: relative; z-index: 1; text-shadow: 1px 1px 3px #000, 0 0 10px #000, 0 0 20px #000; }
         
         /* TIÊU ĐỀ VÀNG ĐỒNG */
-        .gold-title { font-family: 'Share Tech Mono', monospace; font-size: 13px; color: #DAA520; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; text-align: center; text-shadow: 0 0 8px rgba(0,0,0,0.9), 0 0 5px rgba(218, 165, 32, 0.5);}
+        .gold-title { font-family: 'Share Tech Mono', monospace; font-size: 13px; color: #DAA520; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; text-align: center; text-shadow: 1px 1px 2px #000, 0 0 10px rgba(0,0,0,1), 0 0 5px rgba(218, 165, 32, 0.5);}
         
-        /* THÔNG TIN NGÀY GIỜ & BOO TÂM LINH (XÁM BẠC, IN NGHIÊNG) */
-        .info-text { text-align: center; color: #fff; font-size: 15px; margin-bottom: 25px; line-height: 1.6; }
-        .boo-voice { color: #A9A9A9; font-style: italic; font-weight: 400; text-shadow: 0 0 10px #000, 0 0 5px rgba(169,169,169,0.3); font-size: 14px;}
+        /* THÔNG TIN NGÀY GIỜ & BOO TÂM LINH (VỆT SÁNG QUÉT NGANG) */
+        .info-text { text-align: center; color: #fff; font-size: 15px; margin-bottom: 25px; line-height: 1.6; text-shadow: 1px 1px 2px #000, 0 0 10px #000;}
+        .boo-voice { 
+            font-style: italic; font-weight: 500; font-size: 14px;
+            background: linear-gradient(120deg, #888888 0%, #888888 40%, #FFFFFF 50%, #888888 60%, #888888 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shineSweep 3.5s linear infinite;
+            filter: drop-shadow(0 0 5px rgba(0,0,0,0.8));
+        }
+        @keyframes shineSweep { 0% { background-position: 200% center; } 100% { background-position: -200% center; } }
 
-        /* BÁT QUÁI NỔI KHỐI XOAY CHẬM (PHƯƠNG ÁN B) */
+        /* VÒNG LA BÀN ĐIỆN TRẮNG TINH KHIẾT VÀ BÁT QUÁI */
         .compass-wrapper { width: 150px; height: 150px; margin: 15px auto 25px auto; position: relative; cursor: pointer; display: flex; justify-content: center; align-items: center;}
-        .bagua-base { position: absolute; width: 130px; height: 130px; background-image: url('https://upload.wikimedia.org/wikipedia/commons/0/07/Bagua_Taijitu.svg'); background-size: cover; border-radius: 50%; filter: grayscale(100%) drop-shadow(0 8px 15px rgba(0,0,0,0.8)); opacity: 0.25; animation: spinBagua 60s linear infinite; }
-        @keyframes spinBagua { 100% { transform: rotate(360deg); } }
         
-        .compass-dial { width: 100%; height: 100%; position: absolute; transition: transform 0.1s ease-out; }
-        .compass-dial span { position: absolute; font-family: 'Share Tech Mono', monospace; font-size: 18px; font-weight: bold; color: #C41E3A; text-shadow: 0 0 10px #000, 0 0 8px rgba(196, 30, 58, 0.8); } /* Đỏ Chu Sa */
-        .dir-n { top: 0; left: 50%; transform: translateX(-50%); } .dir-s { bottom: 0; left: 50%; transform: translateX(-50%); } .dir-e { top: 50%; right: 0; transform: translateY(-50%); } .dir-w { top: 50%; left: 0; transform: translateY(-50%); }
-        .compass-pointer { position: absolute; top: 50%; left: 50%; width: 2px; height: 65px; background: #DAA520; transform: translate(-50%, -100%); z-index: 5; pointer-events: none; box-shadow: 0 0 5px #DAA520; }
+        /* Vòng đứt đoạn mô phỏng hào Bát Quái */
+        .plasma-ring { position: absolute; width: 140px; height: 140px; border: 1px dashed rgba(255,255,255,0.2); border-radius: 50%; box-shadow: inset 0 0 20px rgba(255,255,255,0.05), 0 0 20px rgba(0,0,0,0.8); z-index: 1; }
         
-        .compass-status { text-align: center; color: #DAA520; font-family: 'Share Tech Mono', monospace; font-size: 13px; margin-top: 5px; cursor: pointer; height: 20px; text-shadow: 0 0 10px #000;}
+        /* Dòng điện Plasma trắng chạy viền */
+        .plasma-spinner { position: absolute; width: 140px; height: 140px; border-radius: 50%; animation: spinPlasma 5s linear infinite; z-index: 2; }
+        .plasma-dot { position: absolute; top: -4px; left: 50%; transform: translateX(-50%); width: 8px; height: 8px; background: #FFF; border-radius: 50%; box-shadow: 0 0 10px #FFF, 0 0 20px #FFF, 0 0 30px #FFF; }
+        
+        /* Trạng thái La bàn */
+        .scanning .plasma-spinner { animation: spinPlasma 0.4s linear infinite; }
+        .locked .plasma-spinner { animation: none; opacity: 0.3; transition: 0.5s; }
+        .locked .plasma-ring { box-shadow: 0 0 30px rgba(255,255,255,0.4), inset 0 0 20px rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.6); transition: 0.5s;}
+        @keyframes spinPlasma { 100% { transform: rotate(360deg); } }
 
-        /* BÀN POKER CÓ VIỀN */
+        .compass-dial { width: 100%; height: 100%; position: absolute; transition: transform 0.1s ease-out; z-index: 3;}
+        .compass-dial span { position: absolute; font-family: 'Share Tech Mono', monospace; font-size: 18px; font-weight: bold; color: #C41E3A; text-shadow: 1px 1px 2px #000, 0 0 10px rgba(0,0,0,1), 0 0 8px rgba(196, 30, 58, 0.8); } /* Đỏ Chu Sa */
+        .dir-n { top: 0; left: 50%; transform: translateX(-50%); } .dir-s { bottom: 0; left: 50%; transform: translateX(-50%); } .dir-e { top: 50%; right: 0; transform: translateY(-50%); } .dir-w { top: 50%; left: 0; transform: translateY(-50%); }
+        .compass-pointer { position: absolute; top: 50%; left: 50%; width: 2px; height: 65px; background: #DAA520; transform: translate(-50%, -100%); z-index: 5; pointer-events: none; box-shadow: 0 0 8px #DAA520, 0 0 5px #000; }
+        
+        .compass-status { text-align: center; color: #DAA520; font-family: 'Share Tech Mono', monospace; font-size: 13px; margin-top: 5px; cursor: pointer; height: 20px; text-shadow: 1px 1px 2px #000, 0 0 10px #000;}
+
+        /* BÀN POKER CÓ VIỀN TRẮNG XÁM MỜ */
         .poker-table-hologram { width: 100%; height: 120px; margin: 15px 0 25px 0; position: relative; display: flex; justify-content: center; align-items: center; }
-        .table-surface { width: 260px; height: 95px; border: 1px dashed rgba(200, 200, 200, 0.3); border-radius: 50px; position: relative; box-shadow: inset 0 0 30px rgba(0,0,0,0.8); background: rgba(0,0,0,0.4); }
-        .seat { position: absolute; width: 28px; height: 28px; background: rgba(10,10,10,0.8); border: 1px solid #555; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 12px; font-family: 'Share Tech Mono', monospace; color: #aaa; cursor: pointer; transition: 0.3s; transform: translate(-50%, -50%); z-index: 2;}
+        .table-surface { width: 260px; height: 95px; border: 1px dashed rgba(200, 200, 200, 0.2); border-radius: 50px; position: relative; box-shadow: inset 0 0 40px rgba(0,0,0,0.8), 0 0 20px rgba(0,0,0,0.8); background: rgba(0,0,0,0.3); }
+        .seat { position: absolute; width: 28px; height: 28px; background: rgba(10,10,10,0.9); border: 1px solid #555; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 12px; font-family: 'Share Tech Mono', monospace; color: #aaa; cursor: pointer; transition: 0.3s; transform: translate(-50%, -50%); z-index: 2; box-shadow: 0 0 10px #000;}
         .seat.selected { border: 1px solid #DAA520; color: #DAA520; font-weight: bold; box-shadow: 0 0 15px rgba(218,165,32,0.5), 0 0 10px #000; transform: translate(-50%, -50%) scale(1.2); background: rgba(20,20,20,0.9);}
         .s1 { left: 25%; top: 100%; } .s2 { left: 0%; top: 50%; } .s3 { left: 20%; top: 0%; } .s4 { left: 40%; top: 0%; } .s5 { left: 60%; top: 0%; } .s6 { left: 80%; top: 0%; } .s7 { left: 100%; top: 50%; } .s8 { left: 75%; top: 100%; } .s9 { left: 50%; top: 100%; }
 
         /* Ô NHẬP LIỆU */
         .input-box { margin-bottom: 25px; display: flex; flex-direction: column; }
-        .input-box input, .input-box select { background: transparent; border: none; border-bottom: 1px dashed #666; padding: 10px 0; color: #fff; font-family: 'Space Grotesk', sans-serif; font-size: 16px; border-radius: 0; outline: none; transition: 0.3s; text-align: center; font-weight: 500; text-shadow: 0 0 5px #000; }
-        .input-box input:focus, .input-box select:focus { border-bottom-color: #DAA520; border-bottom-style: solid; text-shadow: 0 0 5px rgba(218,165,32,0.5), 0 0 10px #000; }
+        .input-box input, .input-box select { background: transparent; border: none; border-bottom: 1px dashed #666; padding: 10px 0; color: #fff; font-family: 'Space Grotesk', sans-serif; font-size: 16px; border-radius: 0; outline: none; transition: 0.3s; text-align: center; font-weight: 500; text-shadow: 1px 1px 2px #000, 0 0 5px #000, 0 0 15px #000; }
+        .input-box input:focus, .input-box select:focus { border-bottom-color: #DAA520; border-bottom-style: solid; text-shadow: 0 0 5px rgba(218,165,32,0.5), 0 0 15px #000; }
         .input-box select option { background: #111; color: #ccc; }
 
         /* NÚT LỆNH THUẦN VIỆT */
-        .action-btn { padding: 15px; background: rgba(0,0,0,0.6); color: #d2d2d2; font-weight: 500; font-size: 14px; border: 1px solid #555; cursor: pointer; width: 100%; font-family: 'Space Grotesk', sans-serif; letter-spacing: 2px; text-transform: uppercase; transition: 0.4s; margin-top: 10px; text-shadow: 0 0 5px #000;}
-        .btn-ritual { border-color: #DAA520; color: #DAA520; box-shadow: 0 0 15px rgba(0,0,0,0.8); background: rgba(20,20,20,0.8); }
-        .btn-ritual.locked { border-color: #555; color: #777; box-shadow: none; background: rgba(0,0,0,0.4); pointer-events: none; animation: breatheLock 2s infinite; }
+        .action-btn { padding: 15px; background: rgba(0,0,0,0.7); color: #d2d2d2; font-weight: 500; font-size: 14px; border: 1px solid #555; cursor: pointer; width: 100%; font-family: 'Space Grotesk', sans-serif; letter-spacing: 2px; text-transform: uppercase; transition: 0.4s; margin-top: 10px; text-shadow: 1px 1px 2px #000, 0 0 10px #000; box-shadow: 0 0 20px rgba(0,0,0,0.8);}
+        .btn-ritual { border-color: #DAA520; color: #DAA520; box-shadow: 0 0 20px rgba(0,0,0,0.9), inset 0 0 10px rgba(218,165,32,0.1); background: rgba(20,20,20,0.8); }
+        .btn-ritual.locked { border-color: #555; color: #777; box-shadow: 0 0 20px rgba(0,0,0,0.9); background: rgba(0,0,0,0.6); pointer-events: none; animation: breatheLock 2s infinite; }
         @keyframes breatheLock { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
         .btn-system { font-family: 'Share Tech Mono', monospace; font-size: 12px; border-style: dashed; color: #888; margin-bottom: 40px;}
 
@@ -87,7 +107,7 @@
         @keyframes riseSmoke { 0% { transform: translateY(0) scale(1) translateX(0); opacity: 0.5; filter: blur(2px); } 100% { transform: translateY(-60px) scale(15) translateX(calc(10px - 20px * var(--r))); opacity: 0; filter: blur(8px); } }
 
         /* MŨI TÊN CUỘN TRANG */
-        .scroll-indicator { text-align: center; color: #DAA520; font-size: 12px; margin-top: 15px; animation: bounce 1.5s infinite; opacity: 0.7; transition: 0.5s; text-shadow: 0 0 5px #000; }
+        .scroll-indicator { text-align: center; color: #DAA520; font-size: 12px; margin-top: 15px; animation: bounce 1.5s infinite; opacity: 0.7; transition: 0.5s; text-shadow: 1px 1px 2px #000, 0 0 10px #000; }
         @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
 
     </style>
@@ -115,12 +135,13 @@
             <div id="setupPhase">
                 <div class="input-box">
                     <div class="gold-title">2. ĐỊA LỢI</div>
-                    <div class="compass-wrapper" onclick="toggleCompass()">
-                        <div class="bagua-base"></div>
+                    <div class="compass-wrapper" id="compassBtn" onclick="toggleCompass()">
+                        <div class="plasma-ring"></div>
+                        <div class="plasma-spinner"><div class="plasma-dot"></div></div>
                         <div id="compassDial" class="compass-dial"><span class="dir-n">B</span><span class="dir-e">Đ</span><span class="dir-s">N</span><span class="dir-w">T</span></div>
                         <div class="compass-pointer"></div>
                     </div>
-                    <div class="compass-status" id="compassStatus" onclick="toggleCompass()">[ TÌM PHƯƠNG VỊ ]</div>
+                    <div class="compass-status" id="compassStatus" onclick="toggleCompass()">[ KHAI MỞ LA BÀN ]</div>
                     <input type="hidden" id="inpFacing" value="Chưa quét">
                 </div>
 
@@ -134,7 +155,7 @@
                     <input type="hidden" id="inpPosition" value="Chưa chọn">
                 </div>
 
-                <div style="display: flex; gap: 15px;">
+                <div id="financesBox" style="display: flex; gap: 15px;">
                     <div class="input-box" style="flex: 1;">
                         <div class="gold-title">4. SỐ MẠNG</div>
                         <select id="inpLives" onchange="playLightClick()"><option>Mạng 1</option><option>Mạng 2</option><option>Mạng 3</option><option>Mạng 4</option></select>
@@ -174,11 +195,11 @@
         const AudioCtx = window.AudioContext || window.webkitAudioContext; let actx;
         function initAudio() { if(!actx) actx = new AudioCtx(); if(actx.state === 'suspended') actx.resume(); }
         
-        function playLightClick() { initAudio(); const osc = actx.createOscillator(); const gain = actx.createGain(); osc.connect(gain); gain.connect(actx.destination); osc.frequency.setValueAtTime(800, actx.currentTime); gain.gain.setValueAtTime(0.05, actx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, actx.currentTime + 0.05); osc.start(); osc.stop(actx.currentTime + 0.05); if(navigator.vibrate) navigator.vibrate(20); }
+        function playLightClick() { initAudio(); const osc = actx.createOscillator(); const gain = actx.createGain(); osc.connect(gain); gain.connect(actx.destination); osc.type = 'square'; osc.frequency.setValueAtTime(900, actx.currentTime); gain.gain.setValueAtTime(0.02, actx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, actx.currentTime + 0.05); osc.start(); osc.stop(actx.currentTime + 0.05); if(navigator.vibrate) navigator.vibrate(20); }
         
-        function playHeavyClack() { initAudio(); const osc = actx.createOscillator(); const gain = actx.createGain(); osc.connect(gain); gain.connect(actx.destination); osc.frequency.setValueAtTime(250, actx.currentTime); gain.gain.setValueAtTime(0.2, actx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, actx.currentTime + 0.1); osc.start(); osc.stop(actx.currentTime + 0.1); if(navigator.vibrate) navigator.vibrate([50]); }
+        function playHeavyClack() { initAudio(); const osc = actx.createOscillator(); const gain = actx.createGain(); osc.connect(gain); gain.connect(actx.destination); osc.type = 'sawtooth'; osc.frequency.setValueAtTime(200, actx.currentTime); gain.gain.setValueAtTime(0.15, actx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, actx.currentTime + 0.1); osc.start(); osc.stop(actx.currentTime + 0.1); if(navigator.vibrate) navigator.vibrate([50]); }
 
-        function doHeavyHaptic() { if(navigator.vibrate) navigator.vibrate([50]); }
+        function doHeavyHaptic() { if(navigator.vibrate) navigator.vibrate([50]); playHeavyClack(); }
 
         /* MA TRẬN XÁM TRẮNG ĐỤC */
         const canvas = document.getElementById('matrixCanvas'); const ctx = canvas.getContext('2d');
@@ -188,7 +209,7 @@
         for(let x = 0; x < columns; x++) drops[x] = Math.random() * -100;
         function drawMatrix() {
             ctx.fillStyle = 'rgba(0, 0, 0, 0.15)'; ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = 'rgba(200, 200, 200, 0.6)'; /* Xám trắng mờ */
+            ctx.fillStyle = 'rgba(200, 200, 200, 0.4)'; /* Xám trắng mờ */
             ctx.font = fontSize + "px 'Space Grotesk', monospace";
             for(let i = 0; i < drops.length; i++) {
                 const text = chars[Math.floor(Math.random() * chars.length)];
@@ -201,7 +222,7 @@
 
         function hideScrollIndicator() { document.getElementById('scrollArrow').style.opacity = '0'; }
 
-        /* KHỞI ĐỘNG */
+        /* KHỞI ĐỘNG VÀO ĐIỆN THỜ */
         function initiateAltar() {
             if(navigator.vibrate) navigator.vibrate([150, 50, 80]);
             let bgm = document.getElementById('bgmAudio'); let gong = document.getElementById('sfxGong');
@@ -229,17 +250,19 @@
 
         function getZodiacHour() {
             const hrs = new Date().getHours();
-            if(hrs >= 19 && hrs < 21) return "Giờ Tuất | BOO Tâm Linh báo: Phòng thủ Blind.";
-            return "Giờ Mão | BOO Tâm Linh báo: Linh hoạt, rình rập."; 
+            if(hrs >= 19 && hrs < 21) return "BOO Tâm Linh báo: Giờ Tuất - Phòng thủ Blind";
+            return "BOO Tâm Linh báo: Giờ Mão - Linh hoạt, rình rập"; 
         }
 
-        /* LA BÀN CƠ HỌC */
+        /* LA BÀN CƠ HỌC TÂM LINH */
         let isCompassActive = false; let currentHeading = 0;
         function toggleCompass() {
             const statusEl = document.getElementById('compassStatus');
+            const compassWrap = document.getElementById('compassBtn');
             if(isCompassActive) {
                 isCompassActive = false; 
                 playHeavyClack(); /* Tiếng CẠCH chốt hạ */
+                compassWrap.classList.remove('scanning'); compassWrap.classList.add('locked');
                 window.removeEventListener('deviceorientationabsolute', handleOri); window.removeEventListener('deviceorientation', handleOri);
                 let finalDir = getDirString(currentHeading); 
                 statusEl.innerHTML = `[ <span class="boo-voice">BOO Tâm Linh báo: ${finalDir}</span> ]`; 
@@ -247,7 +270,8 @@
             } else {
                 isCompassActive = true; 
                 playLightClick(); /* Tiếng Tách khởi động */
-                statusEl.innerHTML = `[ <span style="color:#aaa;">ĐANG DỊCH CHUYỂN...</span> ]`;
+                compassWrap.classList.remove('locked'); compassWrap.classList.add('scanning');
+                statusEl.innerHTML = `[ <span style="color:#aaa;">ĐANG TÌM PHƯƠNG VỊ...</span> ]`;
                 if ('ondeviceorientationabsolute' in window) { window.addEventListener('deviceorientationabsolute', handleOri); } else { window.addEventListener('deviceorientation', handleOri); }
             }
         }
@@ -268,8 +292,19 @@
         /* THẮP NHANG 60S */
         let smokeInterval;
         function executeRitual() {
-            if(document.getElementById('inpFacing').value === 'Chưa quét' || !document.getElementById('inpBuyIn').value) { document.getElementById('btnAction').innerText = "[ LỖI: THIẾU DỮ LIỆU ]"; setTimeout(() => document.getElementById('btnAction').innerText = "[ THẮP NHANG & XUẤT TRẬN ]", 1500); return; }
+            if(document.getElementById('inpFacing').value === 'Chưa quét' || (!document.getElementById('inpBuyIn').value && document.getElementById('financesBox').style.display !== 'none')) { 
+                playHeavyClack(); document.getElementById('btnAction').innerText = "[ LỖI: THIẾU DỮ LIỆU ]"; 
+                setTimeout(() => document.getElementById('btnAction').innerText = "[ THẮP NHANG & XUẤT TRẬN ]", 1500); return; 
+            }
             
+            // Xử lý ném thẳng nếu đang trong chế độ Update Ghế
+            if(document.getElementById('financesBox').style.display === 'none') {
+                playHeavyClack();
+                let btn = document.getElementById('btnAction'); btn.innerText = "[ ĐÃ CẬP NHẬT TỌA ĐỘ ✓ ]";
+                setTimeout(() => { window.location.reload(); }, 1000);
+                return;
+            }
+
             playHeavyClack(); document.getElementById('sfxGong').play().catch(e=>{}); if(navigator.vibrate) navigator.vibrate([100, 50, 100]);
             let btn = document.getElementById('btnAction'); btn.classList.add('locked'); btn.onclick = null;
             document.getElementById('altarPanel').scrollTop = document.getElementById('altarPanel').scrollHeight; 
@@ -308,11 +343,19 @@
             setTimeout(() => { localStorage.removeItem('kdrive_altar_session_' + currentUsername); btn.innerText = "[ ĐÃ TẠ LỄ THÀNH CÔNG ✓ ]"; setTimeout(() => { window.location.href = 'index.html'; }, 1500); }, 1000);
         }
 
+        /* CHẾ ĐỘ ĐỔI GHẾ: ẨN MẠNG & VỐN */
         function updateTable() { 
             playHeavyClack(); 
-            document.getElementById('setupPhase').style.display = 'block'; document.getElementById('finishPhase').style.display = 'none'; 
-            let btn = document.getElementById('btnAction'); btn.innerText = "[ XÁC NHẬN TỌA ĐỘ ]"; 
-            btn.onclick = () => { playHeavyClack(); window.location.reload(); } 
+            document.getElementById('setupPhase').style.display = 'block'; 
+            document.getElementById('finishPhase').style.display = 'none'; 
+            document.getElementById('financesBox').style.display = 'none'; /* Ẩn Mục 4 và 5 */
+            document.getElementById('incenseBox').style.display = 'none'; /* Ẩn Lư Nhang */
+            document.getElementById('scrollArrow').style.display = 'none';
+            document.getElementById('btnUpdateTable').style.display = 'none';
+
+            let btn = document.getElementById('btnAction'); 
+            btn.innerText = "[ XÁC NHẬN TỌA ĐỘ ]"; 
+            btn.onclick = executeRitual; /* Mượn hàm executeRitual để bypass */
         }
     </script>
 </body>

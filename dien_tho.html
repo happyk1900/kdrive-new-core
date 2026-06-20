@@ -10,7 +10,7 @@
         body { background-color: #000; height: 100vh; width: 100vw; display: flex; justify-content: center; align-items: center; overflow: hidden; font-family: 'Space Grotesk', sans-serif; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; color: #d2d2d2; }
         input, select { user-select: auto !important; -webkit-user-select: auto !important; touch-action: auto !important; pointer-events: auto !important; }
 
-        /* MA TRẬN XÁM TRẮNG ĐỤC */
+        /* MA TRẬN XÁM TRẮNG ĐỤC TRONG SUỐT */
         #matrixCanvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 0; opacity: 0.85; pointer-events: none; }
         .ambient-smoke { position: fixed; top: 0; left: 0; width: 200vw; height: 100vh; background: url('https://raw.githubusercontent.com/happyk1900/anh-va-nhac-tram-huan-luyen-chien-binh-/main/smoke-texture.png') repeat-x; background-size: auto 100%; opacity: 0.12; z-index: 1; pointer-events: none; animation: driftSmoke 60s linear infinite; filter: blur(5px); mix-blend-mode: screen; }
         @keyframes driftSmoke { 0% { transform: translateX(0); } 100% { transform: translateX(-50vw); } }
@@ -18,14 +18,14 @@
         .btn-return-lobby { position: absolute; top: 25px; left: 25px; color: #777; font-weight: bold; cursor: pointer; z-index: 60000; font-family: 'Share Tech Mono', monospace; font-size: 13px; text-decoration: none; text-transform: uppercase; letter-spacing: 2px; transition: 0.3s; text-shadow: 0 0 10px #000; }
         .btn-return-lobby:hover { color: #fff; text-shadow: 0 0 15px rgba(255,255,255,0.6); }
 
-        /* SẢNH CHỜ */
+        /* SẢNH CHỜ THẦN TÀI */
         .thantai-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: radial-gradient(circle at center, rgba(10,10,10,0.95) 0%, #000 100%); z-index: 45000; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 1.5s ease-in-out, visibility 1.5s; }
         .big-thantai-img { width: 310px; max-width: 85vw; filter: drop-shadow(0 0 20px rgba(218, 165, 32, 0.1)) grayscale(10%); animation: levitateGod 4s ease-in-out infinite; cursor: pointer; }
         @keyframes levitateGod { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-10px) scale(1.02); filter: drop-shadow(0 0 40px rgba(218, 165, 32, 0.35)) grayscale(0%); } }
         .summon-text { margin-top: 40px; font-family: 'Space Grotesk', sans-serif; font-size: 16px; color: #DAA520; text-shadow: 0 0 15px rgba(218,165,32,0.4), 0 0 5px #000; letter-spacing: 3px; animation: pulseAlpha 2s infinite; font-weight: 500; }
         @keyframes pulseAlpha { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
 
-        /* ĐIỆN THỜ TRONG SUỐT TUYỆT ĐỐI */
+        /* ĐIỆN THỜ TRONG SUỐT TUYỆT ĐỐI (VÔ ẢNH) */
         .altar-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: transparent; z-index: 50000; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: 1.5s ease; }
         .altar-overlay.active { opacity: 1; visibility: visible; }
         .altar-panel { width: 95%; max-width: 420px; padding: 20px; position: relative; height: 85vh; overflow-y: auto; overflow-x: hidden; scrollbar-width: none; }
@@ -36,24 +36,24 @@
         .theater-toggle { color: #fff; cursor: pointer; margin-left: 6px; font-weight: bold; font-family: 'Space Grotesk', sans-serif; text-shadow: 0 0 8px #FFF; transition: 0.2s; font-size: 13px; }
         .theater-toggle:hover { color: #DAA520; text-shadow: 0 0 8px #DAA520; }
 
-        /* BOO TÂM LINH MA QUÁI, HUYẾT NGẢI RỈ MÁU */
+        /* BOO TÂM LINH HUYẾT NGẢI RỈ MÁU, GLITCH MA QUÁI */
         .info-text { text-align: center; color: #fff; font-size: 15px; margin-bottom: 25px; line-height: 1.6; }
         .boo-voice-creepy { 
             font-family: 'Georgia', 'Times New Roman', serif;
             font-style: italic; font-weight: bold; font-size: 16px; margin-top: 8px; display: block;
-            color: #8B0000; /* Máu bầm */
+            color: #8B0000; 
             text-shadow: 0 0 5px #ff0000, 0 2px 4px rgba(139,0,0,0.8);
             animation: bloodGlitch 3.5s infinite;
         }
         @keyframes bloodGlitch {
             0%, 88% { transform: translate(0); text-shadow: 0 0 5px #ff0000, 0 2px 4px rgba(139,0,0,0.8); color: #8B0000; }
-            90% { transform: translate(-1px, 2px); text-shadow: 0 5px 12px #ff0000; color: #ff3333; } /* Nhòe rỉ máu */
+            90% { transform: translate(-1px, 2px); text-shadow: 0 5px 12px #ff0000; color: #ff3333; } 
             92% { transform: translate(1px, -1px); text-shadow: 0 0 5px #ff0000; color: #8B0000; }
-            94% { transform: translate(0, 3px); text-shadow: 0 10px 15px #ff0000; color: #ff0000; } /* Rớt tia máu */
+            94% { transform: translate(0, 3px); text-shadow: 0 10px 15px #ff0000; color: #ff0000; } 
             96% { transform: translate(0); color: #8B0000; text-shadow: 0 0 5px #ff0000; }
         }
 
-        /* LA BÀN ĐIỆN TRẮNG TINH KHIẾT XOAY */
+        /* LA BÀN ĐIỆN PLASMA TRẮNG TINH KHIẾT */
         .compass-wrapper { width: 150px; height: 150px; margin: 15px auto 25px auto; position: relative; cursor: pointer; display: flex; justify-content: center; align-items: center;}
         .plasma-ring { position: absolute; width: 135px; height: 135px; border: 1px dashed rgba(255,255,255,0.15); border-radius: 50%; box-shadow: 0 0 15px rgba(255,255,255,0.1), inset 0 0 15px rgba(255,255,255,0.05); }
         .plasma-spinner { position: absolute; width: 135px; height: 135px; border-radius: 50%; animation: spinPlasma 6s linear infinite; }
@@ -69,20 +69,20 @@
         .compass-pointer { position: absolute; top: 50%; left: 50%; width: 2px; height: 62px; background: #DAA520; transform: translate(-50%, -100%); z-index: 5; pointer-events: none; box-shadow: 0 0 8px #DAA520; }
         .compass-status { text-align: center; color: #DAA520; font-family: 'Share Tech Mono', monospace; font-size: 13px; margin-top: 5px; cursor: pointer; height: 20px;}
 
-        /* BÀN POKER CÓ VIỀN KHÓI */
+        /* BÀN POKER CÓ VIỀN */
         .poker-table-hologram { width: 100%; height: 120px; margin: 15px 0 25px 0; position: relative; display: flex; justify-content: center; align-items: center; }
         .table-surface { width: 260px; height: 95px; border: 1px dashed rgba(200, 200, 200, 0.2); border-radius: 50px; position: relative; box-shadow: inset 0 0 40px rgba(0,0,0,0.9); background: rgba(0,0,0,0.2); }
         .seat { position: absolute; width: 28px; height: 28px; background: rgba(15,15,15,0.9); border: 1px solid #444; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 12px; font-family: 'Share Tech Mono', monospace; color: #888; cursor: pointer; transition: 0.3s; transform: translate(-50%, -50%); z-index: 2;}
         .seat.selected { border: 1px solid #DAA520; color: #DAA520; font-weight: bold; box-shadow: 0 0 15px rgba(218,165,32,0.6); transform: translate(-50%, -50%) scale(1.2); background: rgba(25,25,25,0.95);}
         .s1 { left: 25%; top: 100%; } .s2 { left: 0%; top: 50%; } .s3 { left: 20%; top: 0%; } .s4 { left: 40%; top: 0%; } .s5 { left: 60%; top: 0%; } .s6 { left: 80%; top: 0%; } .s7 { left: 100%; top: 50%; } .s8 { left: 75%; top: 100%; } .s9 { left: 50%; top: 100%; }
 
-        /* Ô NHẬP LIỆU (TỰ ĐỘNG PHẨY, CẤT BÀN PHÍM) */
+        /* Ô NHẬP LIỆU */
         .input-box { margin-bottom: 25px; display: flex; flex-direction: column; }
         .input-box input, .input-box select { background: transparent; border: none; border-bottom: 1px dashed #555; padding: 10px 0; color: #fff; font-family: 'Space Grotesk', sans-serif; font-size: 18px; border-radius: 0; outline: none; transition: 0.3s; text-align: center; font-weight: bold; }
         .input-box input:focus, .input-box select:focus { border-bottom-color: #DAA520; border-bottom-style: solid; text-shadow: 0 0 8px rgba(218,165,32,0.5); }
         .input-box select option { background: #111; color: #ccc; }
 
-        /* NÚT LỆNH */
+        /* NÚT LỆNH KHÔNG GIAN KÉP */
         .action-btn { padding: 15px; background: rgba(0,0,0,0.75); color: #d2d2d2; font-weight: 500; font-size: 14px; border: 1px solid #555; cursor: pointer; width: 100%; font-family: 'Space Grotesk', sans-serif; letter-spacing: 2px; text-transform: uppercase; transition: 0.4s; margin-top: 10px;}
         .btn-ritual { border-color: #DAA520; color: #DAA520; background: rgba(20,20,20,0.8); box-shadow: 0 0 20px rgba(0,0,0,0.8); }
         .btn-ritual.locked { border-color: #444; color: #666; background: rgba(0,0,0,0.5); pointer-events: none; animation: breatheLock 2s infinite; }
@@ -179,10 +179,10 @@
     </div>
 
     <audio id="bgmAudio" src="https://github.com/happyk1900/anh-va-nhac-tram-huan-luyen-chien-binh-/raw/refs/heads/main/Temple%20of%20Zero%20dien%20tho.mp3" loop preload="auto"></audio>
-    <audio id="sfxGong" src="https://assets.mixkit.co/active_storage/sfx/2281/2281-preview.mp3" preload="auto"></audio>
+    <audio id="sfxGong" src="https://github.com/happyk1900/anh-va-nhac-tram-huan-luyen-chien-binh-/raw/refs/heads/main/Chuong%20chua%20v26%20final.mp3?raw=true" preload="auto"></audio>
 
     <script>
-        /* HỆ THỐNG ÂM THANH MÕ (ĐẨY TẦN SỐ SÁNG LÊN) & KHÁNH TẠ LỄ */
+        /* PHÂN CẤP TẦN SỐ SÓNG ÂM */
         const AudioCtx = window.AudioContext || window.webkitAudioContext; let actx;
         function initAudio() { if(!actx) actx = new AudioCtx(); if(actx.state === 'suspended') actx.resume(); }
         
@@ -190,15 +190,15 @@
         
         function playHeavyClack() { initAudio(); const osc = actx.createOscillator(); const gain = actx.createGain(); osc.connect(gain); gain.connect(actx.destination); osc.type = 'sawtooth'; osc.frequency.setValueAtTime(180, actx.currentTime); gain.gain.setValueAtTime(0.12, actx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, actx.currentTime + 0.08); osc.start(); osc.stop(actx.currentTime + 0.08); if(navigator.vibrate) navigator.vibrate([50]); }
 
-        // TIẾNG MÕ (Đanh hơn, không bị đục, chuẩn nhịp 60 BPM = 1000ms)
+        // TIẾNG MÕ ĐANH VANG (Khóa chuẩn 60 BPM = 1000ms trùng khớp nhạc nền)
         function playMoClick() { if(!actx) return; const osc = actx.createOscillator(); const gain = actx.createGain(); const filter = actx.createBiquadFilter(); osc.connect(filter); filter.connect(gain); gain.connect(actx.destination); osc.type = 'triangle'; osc.frequency.setValueAtTime(550, actx.currentTime); filter.type = 'lowpass'; filter.frequency.setValueAtTime(800, actx.currentTime); gain.gain.setValueAtTime(0.3, actx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, actx.currentTime + 0.08); osc.start(); osc.stop(actx.currentTime + 0.08); }
 
-        // TIẾNG KHÁNH ĐỒNG XẢ THIỀN
+        // TIẾNG KHÁNH ĐỒNG XẢ THIỀN BUÔNG BỎ ÁP LỰC KHI ĐÓNG SỔ
         function playKhanhChime() { initAudio(); const osc = actx.createOscillator(); const gain = actx.createGain(); osc.connect(gain); gain.connect(actx.destination); osc.type = 'sine'; osc.frequency.setValueAtTime(2200, actx.currentTime); osc.frequency.exponentialRampToValueAtTime(1800, actx.currentTime + 2.5); gain.gain.setValueAtTime(0.4, actx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, actx.currentTime + 2.5); osc.start(); osc.stop(actx.currentTime + 2.5); if(navigator.vibrate) navigator.vibrate([80, 40, 80]); }
 
         function doHeavyHaptic() { if(navigator.vibrate) navigator.vibrate([50]); playHeavyClack(); }
 
-        /* FORMAT SỐ CÓ DẤU PHẨY VÀ TỰ CẤT BÀN PHÍM */
+        /* TỰ ĐỘNG PHẨY SỐ & PHÍM TỰ TỤT KHI CHẠM NGOÀI */
         function formatNumber(inp) {
             let val = inp.value.replace(/[^0-9\-]/g, '');
             if(val !== '') {
@@ -213,7 +213,7 @@
         function blurOnEnter(e) { if(e.key === 'Enter') { e.target.blur(); playLightClick(); } }
         function blurInputs(e) { if(!e.target.classList.contains('auto-format')) { document.querySelectorAll('.auto-format').forEach(i => i.blur()); } }
 
-        /* MA TRẬN */
+        /* CANVA MA TRẬN */
         const canvas = document.getElementById('matrixCanvas'); const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth; canvas.height = window.innerHeight;
         const chars = "天地玄黃宇宙洪荒日月盈昃辰宿列張".split("");
@@ -232,7 +232,7 @@
         }
         setInterval(drawMatrix, 50);
 
-        /* KHỞI ĐỘNG */
+        /* KÍCH HOẠT VÀO MẬT THẤT */
         function initiateAltar() {
             if(navigator.vibrate) navigator.vibrate([150, 50, 80]);
             let bgm = document.getElementById('bgmAudio'); 
@@ -250,13 +250,10 @@
             updateCompassAnchor("TÂM TRẬN");
             
             const savedSession = localStorage.getItem('kdrive_altar_session_' + currentUsername);
-            if(savedSession) {
-                // Đã thắp nhang -> Nhảy thẳng vào Gian Tạ Lễ
-                openFinishSpace();
-            }
+            if(savedSession) { openFinishSpace(); }
         }
 
-        /* KHÔNG GIAN KÉP (DUAL SPACE LOGIC) */
+        /* VẬN HÀNH KHÔNG GIAN KÉP (DUAL SPACE LUỒNG) */
         function openFinishSpace() {
             isEditSpaceActive = false;
             document.getElementById('setupPhase').style.display = 'none'; 
@@ -264,12 +261,11 @@
             document.getElementById('finishPhase').style.display = 'block'; 
             
             let btn = document.getElementById('btnAction'); 
-            btn.innerText = "[ ĐÓNG SỔ & TẠ LỄ ]"; 
-            btn.onclick = finishSession;
+            btn.style.background = "transparent"; btn.classList.remove('locked');
+            btn.innerText = "[ ĐÓNG SỔ & TẠ LỄ ]"; btn.onclick = finishSession;
             
             let btnView = document.getElementById('btnViewEdit');
-            btnView.style.display = 'block';
-            btnView.innerText = "[ 👁 XEM TỌA ĐỘ / ĐỔI BÀN ]";
+            btnView.style.display = 'block'; btnView.innerText = "[ 👁 XEM TỌA ĐỘ / ĐỔI BÀN ]";
         }
 
         function openViewSpace() {
@@ -277,12 +273,12 @@
             isEditSpaceActive = true;
             document.getElementById('finishPhase').style.display = 'none';
             document.getElementById('setupPhase').style.display = 'block';
-            document.getElementById('financesBox').style.display = 'none'; // Giấu tài chính
-            document.getElementById('btnViewEdit').style.display = 'none'; // Giấu chính nó
+            document.getElementById('financesBox').style.display = 'none'; 
+            document.getElementById('btnViewEdit').style.display = 'none'; 
             
             let btn = document.getElementById('btnAction'); 
             btn.innerText = "[ QUAY LẠI TẠ LỄ ]"; 
-            btn.onclick = () => { playHeavyClack(); openFinishSpace(); }; // Quay lại ko lưu
+            btn.onclick = () => { playHeavyClack(); openFinishSpace(); }; 
         }
 
         function markEditChanged() {
@@ -292,13 +288,13 @@
                 btn.onclick = () => { 
                     playHeavyClack(); 
                     if(navigator.vibrate) navigator.vibrate([50]);
-                    btn.innerText = "[ ĐÃ PHONG ẤN TỌA ĐỘ ✓ ]";
+                    btn.innerText = "[ ĐÃ PHONG ẤN TỌA ĐỘ VỊ TRÍ MỚI ✓ ]";
                     setTimeout(openFinishSpace, 800); 
                 };
             }
         }
 
-        /* CHUYỂN TRẬN ĐỊA INLINE */
+        /* ĐỔI TRẬN ĐỊA LÃNH THỔ INLINE */
         const theaters = ["TÂM TRẬN", "BẮC TRẬN", "NAM TRẬN", "ĐÔNG TRẬN", "TÂY TRẬN"];
         let activeTheaterIdx = 0;
         function cycleTheater() {
@@ -321,7 +317,7 @@
             }
         }
 
-        /* LA BÀN */
+        /* ĐIỀU HƯỚNG LA BÀN */
         let isCompassActive = false; let currentHeading = 0;
         function toggleCompass() {
             const statusEl = document.getElementById('compassStatus');
@@ -361,7 +357,7 @@
 
         function selectSeat(num) { playLightClick(); document.querySelectorAll('.seat').forEach(el => el.classList.remove('selected')); event.target.classList.add('selected'); document.getElementById('inpPosition').value = `Ghế ${num}`; markEditChanged(); }
 
-        /* THẮP NHANG THIỀN ĐỊNH (CHUẨN 60 BPM MÕ) */
+        /* QUY TRÌNH THẮP NHANG THIỀN ĐỊNH CHUẨN 60BPM MÕ -> CHUÔNG CHÙA THẬT */
         let smokeInterval, moInterval;
         function executeRitual() {
             if(document.getElementById('inpFacing').value === 'Chưa quét' || !document.getElementById('inpBuyIn').value) { 
@@ -376,7 +372,7 @@
             document.querySelectorAll('.ember').forEach(e => e.classList.add('burning'));
             smokeInterval = setInterval(createSmoke, 300);
             
-            // TIẾNG MÕ TỤNG NIỆM CHUẨN 60 BPM (1000ms)
+            // TIẾNG MÕ TỤNG NIỆM GÕ KHỚP NHỊP 60 BPM (ĐÚNG 1 GIÂY / 1 NHỊP)
             moInterval = setInterval(playMoClick, 1000);
 
             let timeLeft = 60;
@@ -391,14 +387,13 @@
                     document.querySelectorAll('.ember').forEach(e => e.classList.remove('burning'));
                     localStorage.setItem('kdrive_altar_session_' + currentUsername, JSON.stringify({ active: true }));
                     
-                    // KẾT THÚC: 1 TIẾNG CHUÔNG CHÙA LỚN DUY NHẤT
+                    // KẾT THÚC THẮP NHANG: 1 TIẾNG ĐẠI HỒNG CHUNG CHÙA ĐỒNG VANG RỀN NGUYÊN BẢN
                     let bigBell = document.getElementById('sfxGong');
                     bigBell.volume = 1.0; bigBell.play().catch(e=>{});
                     if(navigator.vibrate) navigator.vibrate([600]); 
                     
                     btn.classList.remove('locked'); btn.innerText = "[ ĐÃ THỈNH THẦN ✓ ]"; btn.style.background = "rgba(218,165,32,0.2)";
                     
-                    // VÀO TRẠNG THÁI THỰC CHIẾN (TẠ LỄ MODE)
                     setTimeout(() => { openFinishSpace(); }, 2000);
                 }
             }, 1000);
@@ -412,7 +407,7 @@
             });
         }
 
-        /* ĐÓNG SỔ & TẠ LỄ (TIẾNG KHÁNH XẢ THIỀN) */
+        /* ĐÓNG SỔ TẠ LỄ + TIẾNG KHÁNH XẢ THIỀN THANH TỊNH */
         function finishSession() {
             if(!document.getElementById('inpLoss').value) {
                 playHeavyClack(); document.getElementById('btnAction').innerText = "[ NHẬP KẾT QUẢ ĐỂ ĐÓNG SỔ ]"; 

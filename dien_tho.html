@@ -4,102 +4,86 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>K-Drive - Neural Altar</title>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:ital,wght@0,400;0,500;0,700;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; touch-action: manipulation; }
-        body { background-color: #000; height: 100vh; width: 100vw; display: flex; justify-content: center; align-items: center; overflow: hidden; font-family: 'Space Grotesk', sans-serif; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; color: #d2d2d2; }
+        body { background-color: #000; height: 100vh; width: 100vw; display: flex; justify-content: center; align-items: center; overflow: hidden; font-family: 'Space Grotesk', sans-serif; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; color: #a0a0a0; }
         input, select { user-select: auto !important; -webkit-user-select: auto !important; touch-action: auto !important; pointer-events: auto !important; }
 
-        /* MA TRẬN XÁM TRẮNG ĐỤC */
+        /* MA TRẬN NỔI SÁNG */
         #matrixCanvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 0; opacity: 0.85; pointer-events: none; }
-        .ambient-smoke { position: fixed; top: 0; left: 0; width: 200vw; height: 100vh; background: url('https://raw.githubusercontent.com/happyk1900/anh-va-nhac-tram-huan-luyen-chien-binh-/main/smoke-texture.png') repeat-x; background-size: auto 100%; opacity: 0.12; z-index: 1; pointer-events: none; animation: driftSmoke 60s linear infinite; filter: blur(5px); mix-blend-mode: screen; }
+        
+        /* KHÓI MỜ NỀN */
+        .ambient-smoke { position: fixed; top: 0; left: 0; width: 200vw; height: 100vh; background: url('https://raw.githubusercontent.com/happyk1900/anh-va-nhac-tram-huan-luyen-chien-binh-/main/smoke-texture.png') repeat-x; background-size: auto 100%; opacity: 0.15; z-index: 1; pointer-events: none; animation: driftSmoke 60s linear infinite; filter: blur(5px); mix-blend-mode: screen; }
         @keyframes driftSmoke { 0% { transform: translateX(0); } 100% { transform: translateX(-50vw); } }
 
-        .btn-return-lobby { position: absolute; top: 25px; left: 25px; color: #777; font-weight: bold; cursor: pointer; z-index: 60000; font-family: 'Share Tech Mono', monospace; font-size: 13px; text-decoration: none; text-transform: uppercase; letter-spacing: 2px; transition: 0.3s; text-shadow: 0 0 10px #000; }
-        .btn-return-lobby:hover { color: #fff; text-shadow: 0 0 15px rgba(255,255,255,0.6); }
+        /* NÚT ĐIỀU HƯỚNG */
+        .btn-return-lobby { position: absolute; top: 25px; left: 25px; color: #666; font-weight: bold; cursor: pointer; z-index: 60000; font-family: 'Share Tech Mono', monospace; font-size: 13px; text-decoration: none; text-transform: uppercase; letter-spacing: 2px; transition: 0.3s; }
+        .btn-return-lobby:hover { color: #d2d2d2; text-shadow: 0 0 10px rgba(210,210,210,0.5); }
 
-        /* SẢNH CHỜ */
-        .thantai-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: radial-gradient(circle at center, rgba(10,10,10,0.95) 0%, #000 100%); z-index: 45000; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 1.5s ease-in-out, visibility 1.5s; }
-        .big-thantai-img { width: 310px; max-width: 85vw; filter: drop-shadow(0 0 20px rgba(218, 165, 32, 0.1)) grayscale(10%); animation: levitateGod 4s ease-in-out infinite; cursor: pointer; }
-        @keyframes levitateGod { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-10px) scale(1.02); filter: drop-shadow(0 0 40px rgba(218, 165, 32, 0.35)) grayscale(0%); } }
-        .summon-text { margin-top: 40px; font-family: 'Space Grotesk', sans-serif; font-size: 16px; color: #DAA520; text-shadow: 0 0 15px rgba(218,165,32,0.4), 0 0 5px #000; letter-spacing: 3px; animation: pulseAlpha 2s infinite; font-weight: 500; }
+        /* SẢNH CHỜ THẦN TÀI */
+        .thantai-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: radial-gradient(circle at center, rgba(15,15,15,0.9) 0%, #000 100%); z-index: 45000; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 1.5s ease-in-out, visibility 1.5s; }
+        .big-thantai-img { width: 320px; max-width: 85vw; filter: drop-shadow(0 0 20px rgba(0, 255, 136, 0.1)) grayscale(10%); animation: levitateGod 4s ease-in-out infinite; cursor: pointer; }
+        @keyframes levitateGod { 0%, 100% { transform: translateY(0) scale(1); filter: drop-shadow(0 0 20px rgba(0, 255, 136, 0.1)) grayscale(10%); } 50% { transform: translateY(-10px) scale(1.02); filter: drop-shadow(0 0 40px rgba(0, 255, 136, 0.3)) grayscale(0%); } }
+        .summon-text { margin-top: 40px; font-family: 'Space Grotesk', sans-serif; font-size: 16px; color: #d2d2d2; text-shadow: 0 0 15px rgba(210,210,210,0.5); letter-spacing: 3px; pointer-events: none; animation: pulseAlpha 2s infinite; font-weight: 500; }
         @keyframes pulseAlpha { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
 
-        /* ĐIỆN THỜ TRONG SUỐT TUYỆT ĐỐI */
-        .altar-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: transparent; z-index: 50000; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: 1.5s ease; }
+        /* ĐIỆN THỜ KÍNH MỜ (THẤY MA TRẬN) */
+        .altar-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(8, 8, 8, 0.65); backdrop-filter: blur(6px); z-index: 50000; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: 1.5s ease; }
         .altar-overlay.active { opacity: 1; visibility: visible; }
         .altar-panel { width: 95%; max-width: 420px; padding: 20px; position: relative; height: 85vh; overflow-y: auto; overflow-x: hidden; scrollbar-width: none; }
         .altar-panel::-webkit-scrollbar { display: none; }
-        .altar-panel > * { position: relative; z-index: 1; text-shadow: 1px 1px 3px #000, 0 0 12px #000, 0 0 25px #000; }
         
-        .gold-title { font-family: 'Share Tech Mono', monospace; font-size: 13px; color: #DAA520; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; text-align: center; }
-        .theater-toggle { color: #fff; cursor: pointer; margin-left: 6px; font-weight: bold; font-family: 'Space Grotesk', sans-serif; text-shadow: 0 0 8px #FFF; transition: 0.2s; font-size: 13px; }
-        .theater-toggle:hover { color: #DAA520; text-shadow: 0 0 8px #DAA520; }
-
-        /* BOO TÂM LINH MA QUÁI, HUYẾT NGẢI RỈ MÁU */
-        .info-text { text-align: center; color: #fff; font-size: 15px; margin-bottom: 25px; line-height: 1.6; }
-        .boo-voice-creepy { 
-            font-family: 'Georgia', 'Times New Roman', serif;
-            font-style: italic; font-weight: bold; font-size: 16px; margin-top: 8px; display: block;
-            color: #8B0000; /* Máu bầm */
-            text-shadow: 0 0 5px #ff0000, 0 2px 4px rgba(139,0,0,0.8);
-            animation: bloodGlitch 3.5s infinite;
-        }
-        @keyframes bloodGlitch {
-            0%, 88% { transform: translate(0); text-shadow: 0 0 5px #ff0000, 0 2px 4px rgba(139,0,0,0.8); color: #8B0000; }
-            90% { transform: translate(-1px, 2px); text-shadow: 0 5px 12px #ff0000; color: #ff3333; } /* Nhòe rỉ máu */
-            92% { transform: translate(1px, -1px); text-shadow: 0 0 5px #ff0000; color: #8B0000; }
-            94% { transform: translate(0, 3px); text-shadow: 0 10px 15px #ff0000; color: #ff0000; } /* Rớt tia máu */
-            96% { transform: translate(0); color: #8B0000; text-shadow: 0 0 5px #ff0000; }
-        }
-
-        /* LA BÀN ĐIỆN TRẮNG TINH KHIẾT XOAY */
-        .compass-wrapper { width: 150px; height: 150px; margin: 15px auto 25px auto; position: relative; cursor: pointer; display: flex; justify-content: center; align-items: center;}
-        .plasma-ring { position: absolute; width: 135px; height: 135px; border: 1px dashed rgba(255,255,255,0.15); border-radius: 50%; box-shadow: 0 0 15px rgba(255,255,255,0.1), inset 0 0 15px rgba(255,255,255,0.05); }
-        .plasma-spinner { position: absolute; width: 135px; height: 135px; border-radius: 50%; animation: spinPlasma 6s linear infinite; }
-        .plasma-dot { position: absolute; top: -4px; left: 50%; transform: translateX(-50%); width: 8px; height: 8px; background: #FFF; border-radius: 50%; box-shadow: 0 0 12px #FFF, 0 0 25px #FFF; }
-        .scanning .plasma-spinner { animation: spinPlasma 0.4s linear infinite; }
-        .locked-effect .plasma-ring { animation: pulseLock 0.4s ease-out; }
-        @keyframes spinPlasma { 100% { transform: rotate(360deg); } }
-        @keyframes pulseLock { 0% { box-shadow: 0 0 0px #FFF; border-color: #FFF; } 50% { box-shadow: 0 0 35px #FFF, inset 0 0 20px #FFF; border-color: #FFF; } 100% { box-shadow: 0 0 15px rgba(255,255,255,0.1); } }
-
-        .compass-dial { width: 100%; height: 100%; position: absolute; transition: transform 0.1s ease-out; z-index: 3;}
-        .compass-dial span { position: absolute; font-family: 'Share Tech Mono', monospace; font-size: 18px; font-weight: bold; color: #444; transition: color 0.3s, text-shadow 0.3s; }
+        .altar-panel > * { position: relative; z-index: 1; }
+        
+        /* ĐÁNH SỐ VÀNG ĐỒNG (GOLD) */
+        .gold-title { font-family: 'Share Tech Mono', monospace; font-size: 12px; color: #DAA520; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; text-align: center; text-shadow: 0 0 8px rgba(218, 165, 32, 0.4);}
+        
+        /* BÁT QUÁI NỔI KHỐI XOAY CHẬM (PHƯƠNG ÁN B) */
+        .compass-wrapper { width: 140px; height: 140px; margin: 15px auto 25px auto; position: relative; cursor: pointer; display: flex; justify-content: center; align-items: center;}
+        .bagua-base { position: absolute; width: 120px; height: 120px; background-image: url('https://upload.wikimedia.org/wikipedia/commons/0/07/Bagua_Taijitu.svg'); background-size: cover; border-radius: 50%; filter: grayscale(100%) brightness(1.5) drop-shadow(0 10px 15px rgba(0,0,0,0.9)); box-shadow: inset 0 0 20px rgba(255,255,255,0.2), 0 0 10px rgba(255,255,255,0.1); opacity: 0.6; animation: spinBagua 60s linear infinite; }
+        @keyframes spinBagua { 100% { transform: rotate(360deg); } }
+        
+        .compass-dial { width: 100%; height: 100%; position: absolute; transition: transform 0.1s ease-out; }
+        .compass-dial span { position: absolute; font-family: 'Share Tech Mono', monospace; font-size: 16px; font-weight: bold; color: #C41E3A; text-shadow: 0 0 8px rgba(196, 30, 58, 0.8), 0 0 2px #000; } /* Màu Đỏ Chu Sa */
         .dir-n { top: 0; left: 50%; transform: translateX(-50%); } .dir-s { bottom: 0; left: 50%; transform: translateX(-50%); } .dir-e { top: 50%; right: 0; transform: translateY(-50%); } .dir-w { top: 50%; left: 0; transform: translateY(-50%); }
-        .compass-pointer { position: absolute; top: 50%; left: 50%; width: 2px; height: 62px; background: #DAA520; transform: translate(-50%, -100%); z-index: 5; pointer-events: none; box-shadow: 0 0 8px #DAA520; }
-        .compass-status { text-align: center; color: #DAA520; font-family: 'Share Tech Mono', monospace; font-size: 13px; margin-top: 5px; cursor: pointer; height: 20px;}
+        .compass-pointer { position: absolute; top: 50%; left: 50%; width: 2px; height: 60px; background: #DAA520; transform: translate(-50%, -100%); z-index: 5; pointer-events: none; box-shadow: 0 0 5px #DAA520; }
+        
+        .compass-status { text-align: center; color: #DAA520; font-family: 'Space Grotesk', sans-serif; font-size: 13px; margin-top: 5px; font-weight: 500; cursor: pointer; height: 20px; text-shadow: 0 0 8px rgba(218,165,32,0.3);}
 
-        /* BÀN POKER CÓ VIỀN KHÓI */
-        .poker-table-hologram { width: 100%; height: 120px; margin: 15px 0 25px 0; position: relative; display: flex; justify-content: center; align-items: center; }
-        .table-surface { width: 260px; height: 95px; border: 1px dashed rgba(200, 200, 200, 0.2); border-radius: 50px; position: relative; box-shadow: inset 0 0 40px rgba(0,0,0,0.9); background: rgba(0,0,0,0.2); }
-        .seat { position: absolute; width: 28px; height: 28px; background: rgba(15,15,15,0.9); border: 1px solid #444; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 12px; font-family: 'Share Tech Mono', monospace; color: #888; cursor: pointer; transition: 0.3s; transform: translate(-50%, -50%); z-index: 2;}
-        .seat.selected { border: 1px solid #DAA520; color: #DAA520; font-weight: bold; box-shadow: 0 0 15px rgba(218,165,32,0.6); transform: translate(-50%, -50%) scale(1.2); background: rgba(25,25,25,0.95);}
+        /* BÀN POKER KẺ VIỀN */
+        .poker-table-hologram { width: 100%; height: 110px; margin: 15px 0 25px 0; position: relative; display: flex; justify-content: center; align-items: center; }
+        .table-surface { width: 240px; height: 90px; border: 1px dashed rgba(255, 255, 255, 0.2); border-radius: 60px; position: relative; box-shadow: inset 0 0 20px rgba(0,0,0,0.5); }
+        .seat { position: absolute; width: 26px; height: 26px; background: #050505; border: 1px solid #444; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 11px; font-family: 'Share Tech Mono', monospace; color: #888; cursor: pointer; transition: 0.3s; transform: translate(-50%, -50%); z-index: 2;}
+        .seat.selected { border: 1px solid #DAA520; color: #DAA520; font-weight: bold; box-shadow: 0 0 15px rgba(218,165,32,0.5); transform: translate(-50%, -50%) scale(1.2); background: rgba(218,165,32,0.1);}
         .s1 { left: 25%; top: 100%; } .s2 { left: 0%; top: 50%; } .s3 { left: 20%; top: 0%; } .s4 { left: 40%; top: 0%; } .s5 { left: 60%; top: 0%; } .s6 { left: 80%; top: 0%; } .s7 { left: 100%; top: 50%; } .s8 { left: 75%; top: 100%; } .s9 { left: 50%; top: 100%; }
 
-        /* Ô NHẬP LIỆU (TỰ ĐỘNG PHẨY, CẤT BÀN PHÍM) */
+        /* Ô NHẬP LIỆU */
         .input-box { margin-bottom: 25px; display: flex; flex-direction: column; }
-        .input-box input, .input-box select { background: transparent; border: none; border-bottom: 1px dashed #555; padding: 10px 0; color: #fff; font-family: 'Space Grotesk', sans-serif; font-size: 18px; border-radius: 0; outline: none; transition: 0.3s; text-align: center; font-weight: bold; }
-        .input-box input:focus, .input-box select:focus { border-bottom-color: #DAA520; border-bottom-style: solid; text-shadow: 0 0 8px rgba(218,165,32,0.5); }
-        .input-box select option { background: #111; color: #ccc; }
+        .input-box input, .input-box select { background: transparent; border: none; border-bottom: 1px dashed #555; padding: 10px 0; color: #d2d2d2; font-family: 'Space Grotesk', sans-serif; font-size: 16px; border-radius: 0; outline: none; transition: 0.3s; text-align: center; font-weight: 500; }
+        .input-box input:focus, .input-box select:focus { border-bottom-color: #DAA520; border-bottom-style: solid; text-shadow: 0 0 5px rgba(218,165,32,0.3); }
+        .input-box select option { background: #0a0a0a; color: #ccc; }
 
         /* NÚT LỆNH */
-        .action-btn { padding: 15px; background: rgba(0,0,0,0.75); color: #d2d2d2; font-weight: 500; font-size: 14px; border: 1px solid #555; cursor: pointer; width: 100%; font-family: 'Space Grotesk', sans-serif; letter-spacing: 2px; text-transform: uppercase; transition: 0.4s; margin-top: 10px;}
-        .btn-ritual { border-color: #DAA520; color: #DAA520; background: rgba(20,20,20,0.8); box-shadow: 0 0 20px rgba(0,0,0,0.8); }
-        .btn-ritual.locked { border-color: #444; color: #666; background: rgba(0,0,0,0.5); pointer-events: none; animation: breatheLock 2s infinite; }
+        .action-btn { padding: 15px; background: transparent; color: #d2d2d2; font-weight: 500; font-size: 14px; border: 1px solid #444; cursor: pointer; width: 100%; font-family: 'Space Grotesk', sans-serif; letter-spacing: 2px; text-transform: uppercase; transition: 0.4s; margin-top: 10px;}
+        .btn-ritual { border-color: #DAA520; color: #DAA520; text-shadow: 0 0 5px rgba(218,165,32,0.3); background: rgba(218,165,32,0.05); }
+        .btn-ritual.locked { border-color: #555; color: #555; text-shadow: none; background: transparent; pointer-events: none; animation: breatheLock 2s infinite; }
         @keyframes breatheLock { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
-        
-        .btn-view-edit { font-family: 'Share Tech Mono', monospace; font-size: 12px; border: 1px dashed #555; color: #777; margin-top: 20px; background: transparent; box-shadow: none; text-shadow: none;}
-        .btn-view-edit:hover { color: #ccc; border-color: #888; }
+        .btn-system { font-family: 'Share Tech Mono', monospace; font-size: 12px; border-style: dashed; color: #666; margin-bottom: 40px;}
 
         /* KHU VỰC THẮP NHANG */
         .incense-shrine { display: flex; justify-content: center; gap: 25px; margin: 30px 0 15px 0; height: 100px; position: relative; align-items: flex-end; }
         .incense-stick { width: 3px; height: 100%; background: #220000; position: relative; border-radius: 2px 2px 0 0; display: flex; justify-content: center; transition: height 1s linear; }
         .incense-core { width: 100%; height: 100%; background: linear-gradient(to bottom, #8B0000, #330000); border-radius: 2px 2px 0 0; }
-        .ember { position: absolute; top: 0; width: 5px; height: 5px; background: #ffaa00; border-radius: 50%; transform: translateY(-50%); box-shadow: 0 0 10px #ff3300, 0 0 20px #ff0000; opacity: 0; z-index: 10; }
+        .ember { position: absolute; top: 0; width: 5px; height: 5px; background: #ffaa00; border-radius: 50%; transform: translateY(-50%); box-shadow: 0 0 10px #ff3300, 0 0 20px #ff0000; opacity: 0; transition: opacity 0.5s; z-index: 10; }
         .ember.burning { opacity: 1; animation: pulseEmber 0.5s infinite alternate; }
         @keyframes pulseEmber { 0% { box-shadow: 0 0 5px #ff3300; background: #ff6600; } 100% { box-shadow: 0 0 15px #ff0000, 0 0 25px #ffaa00; background: #ffcc00; } }
-        .smoke-particle { position: absolute; top: -10px; width: 2px; height: 2px; background: #ddd; border-radius: 50%; filter: blur(3px); opacity: 0; }
-        @keyframes riseSmoke { 0% { transform: translateY(0) scale(1) translateX(0); opacity: 0.5; filter: blur(2px); } 100% { transform: translateY(-60px) scale(15) translateX(calc(10px - 20px * var(--r))); opacity: 0; filter: blur(8px); } }
+        .smoke-particle { position: absolute; top: -10px; width: 2px; height: 2px; background: #ccc; border-radius: 50%; filter: blur(3px); opacity: 0; }
+        @keyframes riseSmoke { 0% { transform: translateY(0) scale(1) translateX(0); opacity: 0.6; filter: blur(2px); } 100% { transform: translateY(-60px) scale(15) translateX(calc(10px - 20px * var(--r))); opacity: 0; filter: blur(8px); } }
+
+        /* MŨI TÊN CUỘN TRANG */
+        .scroll-indicator { text-align: center; color: #DAA520; font-size: 12px; margin-top: 15px; animation: bounce 1.5s infinite; opacity: 0.7; transition: 0.5s; }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
 
     </style>
 </head>
@@ -107,7 +91,7 @@
     <canvas id="matrixCanvas"></canvas>
     <div class="ambient-smoke"></div>
 
-    <a href="index.html" class="btn-return-lobby" onclick="doHeavyHaptic()">[ RETURN TO LOBBY ]</a>
+    <a href="index.html" class="btn-return-lobby">[ RETURN TO LOBBY ]</a>
 
     <div id="thantaiScreen" class="thantai-overlay">
         <img src="https://github.com/happyk1900/anh-va-nhac-tram-huan-luyen-chien-binh-/blob/main/ban%20tho%20ong%20dia.png?raw=true" class="big-thantai-img" onclick="initiateAltar()">
@@ -115,26 +99,23 @@
     </div>
 
     <div id="altarScreen" class="altar-overlay">
-        <div class="altar-panel" id="altarPanel" onclick="blurInputs(event)">
+        <div class="altar-panel" id="altarPanel" onscroll="hideScrollIndicator()">
             
-            <div id="setupPhase">
-                <div id="thienThoiBox">
-                    <div class="gold-title">1. THIÊN THỜI</div>
-                    <div class="info-text">
-                        Ngày: <span id="lblLunar" style="font-weight: bold;"></span> [Âm lịch]
-                        <span class="boo-voice-creepy" id="lblZodiac">BOO Tâm Linh báo: Giờ Mão - Linh hoạt, rình rập</span>
-                    </div>
-                </div>
+            <div class="gold-title">1. THIÊN THỜI [ÂM LỊCH]</div>
+            <div style="text-align: center; color: #ccc; font-size: 14px; margin-bottom: 25px; line-height: 1.6;">
+                Ngày: <span id="lblLunar" style="color: #fff; font-weight: bold;"></span><br>
+                <span id="lblZodiac"></span>
+            </div>
 
+            <div id="setupPhase">
                 <div class="input-box">
-                    <div class="gold-title">2. ĐỊA LỢI <span id="lblTheater" class="theater-toggle" onclick="cycleTheater()">[TÂM TRẬN]</span></div>
-                    <div class="compass-wrapper" id="compassBtn" onclick="toggleCompass()">
-                        <div class="plasma-ring"></div>
-                        <div class="plasma-spinner"><div class="plasma-dot"></div></div>
+                    <div class="gold-title">2. ĐỊA LỢI</div>
+                    <div class="compass-wrapper" onclick="toggleCompass()">
+                        <div class="bagua-base"></div>
                         <div id="compassDial" class="compass-dial"><span class="dir-n">B</span><span class="dir-e">Đ</span><span class="dir-s">N</span><span class="dir-w">T</span></div>
                         <div class="compass-pointer"></div>
                     </div>
-                    <div class="compass-status" id="compassStatus" onclick="toggleCompass()">[ KHAI MỞ LA BÀN ]</div>
+                    <div class="compass-status" id="compassStatus" onclick="toggleCompass()">[ SCAN AREA ]</div>
                     <input type="hidden" id="inpFacing" value="Chưa quét">
                 </div>
 
@@ -148,24 +129,26 @@
                     <input type="hidden" id="inpPosition" value="Chưa chọn">
                 </div>
 
-                <div id="financesBox" style="display: flex; gap: 15px;">
+                <div style="display: flex; gap: 15px;">
                     <div class="input-box" style="flex: 1;">
                         <div class="gold-title">4. SỐ MẠNG</div>
-                        <select id="inpLives" onchange="playLightClick()"><option>Mạng 1</option><option>Mạng 2</option><option>Mạng 3</option><option>Mạng 4</option></select>
+                        <select id="inpLives"><option>Mạng 1</option><option>Mạng 2</option><option>Mạng 3</option><option>Mạng 4</option></select>
                     </div>
                     <div class="input-box" style="flex: 1.5;">
                         <div class="gold-title">5. TIỀN VỐN</div>
-                        <input type="text" id="inpBuyIn" class="auto-format" placeholder="Nhập chip..." oninput="formatNumber(this)" onkeypress="blurOnEnter(event)" onfocus="playLightClick()">
+                        <input type="text" id="inpBuyIn" placeholder="Nhập chip..." oninput="formatCurrency(this)">
                     </div>
                 </div>
             </div>
 
-            <div id="finishPhase" style="display: none; margin-top: 80px;">
-                <div class="input-box">
+            <div id="finishPhase" style="display: none;">
+                <div class="input-box" style="margin-top: 30px;">
                     <div class="gold-title">KẾT QUẢ THỰC CHIẾN</div>
-                    <input type="text" id="inpLoss" class="auto-format" placeholder="Ví dụ: 5,000" style="color: #DAA520; font-size: 24px;" oninput="formatNumber(this)" onkeypress="blurOnEnter(event)">
+                    <input type="text" id="inpLoss" placeholder="+5,000 / -5,000" style="color: #DAA520; font-size: 20px;" oninput="formatCurrency(this)">
                 </div>
             </div>
+
+            <div class="scroll-indicator" id="scrollArrow">▼ ▼ ▼</div>
 
             <div class="incense-shrine" id="incenseBox">
                 <div class="incense-stick" id="inc1"><div class="incense-core"></div><div class="ember"></div></div>
@@ -174,7 +157,7 @@
             </div>
 
             <button class="action-btn btn-ritual" id="btnAction" onclick="executeRitual()">[ THẮP NHANG & XUẤT TRẬN ]</button>
-            <button class="action-btn btn-view-edit" id="btnViewEdit" style="display:none;" onclick="openViewSpace()">[ 👁 XEM TỌA ĐỘ / ĐỔI BÀN ]</button>
+            <button class="action-btn btn-system" id="btnUpdateTable" style="display:none;" onclick="updateTable()">[ SYSTEM: UPDATE POSITION ]</button>
         </div>
     </div>
 
@@ -182,46 +165,15 @@
     <audio id="sfxGong" src="https://assets.mixkit.co/active_storage/sfx/2281/2281-preview.mp3" preload="auto"></audio>
 
     <script>
-        /* HỆ THỐNG ÂM THANH MÕ (ĐẨY TẦN SỐ SÁNG LÊN) & KHÁNH TẠ LỄ */
-        const AudioCtx = window.AudioContext || window.webkitAudioContext; let actx;
-        function initAudio() { if(!actx) actx = new AudioCtx(); if(actx.state === 'suspended') actx.resume(); }
-        
-        function playLightClick() { initAudio(); const osc = actx.createOscillator(); const gain = actx.createGain(); osc.connect(gain); gain.connect(actx.destination); osc.type = 'square'; osc.frequency.setValueAtTime(900, actx.currentTime); gain.gain.setValueAtTime(0.015, actx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, actx.currentTime + 0.04); osc.start(); osc.stop(actx.currentTime + 0.04); if(navigator.vibrate) navigator.vibrate(20); }
-        
-        function playHeavyClack() { initAudio(); const osc = actx.createOscillator(); const gain = actx.createGain(); osc.connect(gain); gain.connect(actx.destination); osc.type = 'sawtooth'; osc.frequency.setValueAtTime(180, actx.currentTime); gain.gain.setValueAtTime(0.12, actx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, actx.currentTime + 0.08); osc.start(); osc.stop(actx.currentTime + 0.08); if(navigator.vibrate) navigator.vibrate([50]); }
-
-        // TIẾNG MÕ (Đanh hơn, không bị đục, chuẩn nhịp 60 BPM = 1000ms)
-        function playMoClick() { if(!actx) return; const osc = actx.createOscillator(); const gain = actx.createGain(); const filter = actx.createBiquadFilter(); osc.connect(filter); filter.connect(gain); gain.connect(actx.destination); osc.type = 'triangle'; osc.frequency.setValueAtTime(550, actx.currentTime); filter.type = 'lowpass'; filter.frequency.setValueAtTime(800, actx.currentTime); gain.gain.setValueAtTime(0.3, actx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, actx.currentTime + 0.08); osc.start(); osc.stop(actx.currentTime + 0.08); }
-
-        // TIẾNG KHÁNH ĐỒNG XẢ THIỀN
-        function playKhanhChime() { initAudio(); const osc = actx.createOscillator(); const gain = actx.createGain(); osc.connect(gain); gain.connect(actx.destination); osc.type = 'sine'; osc.frequency.setValueAtTime(2200, actx.currentTime); osc.frequency.exponentialRampToValueAtTime(1800, actx.currentTime + 2.5); gain.gain.setValueAtTime(0.4, actx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, actx.currentTime + 2.5); osc.start(); osc.stop(actx.currentTime + 2.5); if(navigator.vibrate) navigator.vibrate([80, 40, 80]); }
-
-        function doHeavyHaptic() { if(navigator.vibrate) navigator.vibrate([50]); playHeavyClack(); }
-
-        /* FORMAT SỐ CÓ DẤU PHẨY VÀ TỰ CẤT BÀN PHÍM */
-        function formatNumber(inp) {
-            let val = inp.value.replace(/[^0-9\-]/g, '');
-            if(val !== '') {
-                let isNeg = val.startsWith('-');
-                val = val.replace(/\-/g, '');
-                if(val !== '') {
-                    val = parseInt(val, 10).toLocaleString('en-US');
-                    inp.value = (isNeg ? '-' : '') + val;
-                } else { inp.value = '-'; }
-            } else { inp.value = ''; }
-        }
-        function blurOnEnter(e) { if(e.key === 'Enter') { e.target.blur(); playLightClick(); } }
-        function blurInputs(e) { if(!e.target.classList.contains('auto-format')) { document.querySelectorAll('.auto-format').forEach(i => i.blur()); } }
-
-        /* MA TRẬN */
+        /* MA TRẬN SÁNG MÀU XANH NEON */
         const canvas = document.getElementById('matrixCanvas'); const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth; canvas.height = window.innerHeight;
         const chars = "天地玄黃宇宙洪荒日月盈昃辰宿列張".split("");
         const fontSize = 16; const columns = canvas.width / fontSize; const drops = [];
         for(let x = 0; x < columns; x++) drops[x] = Math.random() * -100;
         function drawMatrix() {
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.15)'; ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = 'rgba(210, 210, 210, 0.4)'; 
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.1)'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = 'rgba(0, 255, 136, 0.8)'; /* Xanh sáng */
             ctx.font = fontSize + "px 'Space Grotesk', monospace";
             for(let i = 0; i < drops.length; i++) {
                 const text = chars[Math.floor(Math.random() * chars.length)];
@@ -232,174 +184,89 @@
         }
         setInterval(drawMatrix, 50);
 
+        function doHaptic(pattern) { if(navigator.vibrate) navigator.vibrate(pattern); }
+        function hideScrollIndicator() { document.getElementById('scrollArrow').style.opacity = '0'; }
+
         /* KHỞI ĐỘNG */
         function initiateAltar() {
-            if(navigator.vibrate) navigator.vibrate([150, 50, 80]);
-            let bgm = document.getElementById('bgmAudio'); 
-            bgm.volume = 0.4; bgm.play().catch(e=>console.log(e));
+            doHaptic([150, 50, 80]);
+            let bgm = document.getElementById('bgmAudio'); let gong = document.getElementById('sfxGong');
+            bgm.volume = 0.5; bgm.play().catch(e=>console.log(e));
+            gong.volume = 0.8; gong.play().catch(e=>console.log(e)); // SFX chạy độc lập, không cướp mic
+            
             document.getElementById('thantaiScreen').style.opacity = '0';
             setTimeout(() => { document.getElementById('thantaiScreen').style.display = 'none'; loadAltarData(); document.getElementById('altarScreen').classList.add('active'); }, 1000);
         }
 
         let currentUsername = sessionStorage.getItem('kdrive_username') || 'Guest';
-        let isEditSpaceActive = false;
-
         function loadAltarData() {
             let d = new Date(); let lunarFormatter = new Intl.DateTimeFormat('vi-VN-u-ca-chinese', {day: '2-digit', month: '2-digit'});
             document.getElementById('lblLunar').innerText = lunarFormatter.format(d);
-            updateCompassAnchor("TÂM TRẬN");
+            document.getElementById('lblZodiac').innerText = getZodiacHour();
             
             const savedSession = localStorage.getItem('kdrive_altar_session_' + currentUsername);
             if(savedSession) {
-                // Đã thắp nhang -> Nhảy thẳng vào Gian Tạ Lễ
-                openFinishSpace();
+                document.getElementById('setupPhase').style.display = 'none'; document.getElementById('finishPhase').style.display = 'block';
+                document.getElementById('btnUpdateTable').style.display = 'block'; document.getElementById('incenseBox').style.display = 'none';
+                document.getElementById('scrollArrow').style.display = 'none';
+                let btn = document.getElementById('btnAction'); btn.innerText = "[ ĐÓNG SỔ & TẠ LỄ ]"; btn.onclick = finishSession;
             }
         }
 
-        /* KHÔNG GIAN KÉP (DUAL SPACE LOGIC) */
-        function openFinishSpace() {
-            isEditSpaceActive = false;
-            document.getElementById('setupPhase').style.display = 'none'; 
-            document.getElementById('incenseBox').style.display = 'none'; 
-            document.getElementById('finishPhase').style.display = 'block'; 
-            
-            let btn = document.getElementById('btnAction'); 
-            btn.innerText = "[ ĐÓNG SỔ & TẠ LỄ ]"; 
-            btn.onclick = finishSession;
-            
-            let btnView = document.getElementById('btnViewEdit');
-            btnView.style.display = 'block';
-            btnView.innerText = "[ 👁 XEM TỌA ĐỘ / ĐỔI BÀN ]";
-        }
-
-        function openViewSpace() {
-            playHeavyClack();
-            isEditSpaceActive = true;
-            document.getElementById('finishPhase').style.display = 'none';
-            document.getElementById('setupPhase').style.display = 'block';
-            document.getElementById('financesBox').style.display = 'none'; // Giấu tài chính
-            document.getElementById('btnViewEdit').style.display = 'none'; // Giấu chính nó
-            
-            let btn = document.getElementById('btnAction'); 
-            btn.innerText = "[ QUAY LẠI TẠ LỄ ]"; 
-            btn.onclick = () => { playHeavyClack(); openFinishSpace(); }; // Quay lại ko lưu
-        }
-
-        function markEditChanged() {
-            if(isEditSpaceActive) {
-                let btn = document.getElementById('btnAction'); 
-                btn.innerText = "[ LƯU TỌA ĐỘ MỚI ]"; 
-                btn.onclick = () => { 
-                    playHeavyClack(); 
-                    if(navigator.vibrate) navigator.vibrate([50]);
-                    btn.innerText = "[ ĐÃ PHONG ẤN TỌA ĐỘ ✓ ]";
-                    setTimeout(openFinishSpace, 800); 
-                };
-            }
-        }
-
-        /* CHUYỂN TRẬN ĐỊA INLINE */
-        const theaters = ["TÂM TRẬN", "BẮC TRẬN", "NAM TRẬN", "ĐÔNG TRẬN", "TÂY TRẬN"];
-        let activeTheaterIdx = 0;
-        function cycleTheater() {
-            activeTheaterIdx = (activeTheaterIdx + 1) % theaters.length;
-            const tName = theaters[activeTheaterIdx];
-            document.getElementById('lblTheater').innerText = `[${tName}]`;
-            playLightClick(); updateCompassAnchor(tName); markEditChanged();
-        }
-
-        function updateCompassAnchor(theater) {
-            document.querySelectorAll('.compass-dial span').forEach(el => { el.style.color = '#333'; el.style.textShadow = 'none'; });
-            if(theater === "TÂM TRẬN" || theater === "BẮC TRẬN") {
-                let b = document.querySelector('.dir-n'); b.style.color = '#C41E3A'; b.style.textShadow = '0 0 10px rgba(196,30,58,0.8)';
-            } else if(theater === "NAM TRẬN") {
-                let n = document.querySelector('.dir-s'); n.style.color = '#C41E3A'; n.style.textShadow = '0 0 10px rgba(196,30,58,0.8)';
-            } else if(theater === "ĐÔNG TRẬN") {
-                let d = document.querySelector('.dir-e'); d.style.color = '#C41E3A'; d.style.textShadow = '0 0 10px rgba(196,30,58,0.8)';
-            } else if(theater === "TÂY TRẬN") {
-                let t = document.querySelector('.dir-w'); t.style.color = '#C41E3A'; t.style.textShadow = '0 0 10px rgba(196,30,58,0.8)';
-            }
+        function getZodiacHour() {
+            const hrs = new Date().getHours();
+            if(hrs >= 19 && hrs < 21) return "Giờ Tuất | BOO Tâm Linh báo: Phòng thủ Blind.";
+            return "Giờ Mão | BOO Tâm Linh báo: Linh hoạt, rình rập."; // Demo
         }
 
         /* LA BÀN */
         let isCompassActive = false; let currentHeading = 0;
         function toggleCompass() {
-            const statusEl = document.getElementById('compassStatus');
-            const compassWrap = document.getElementById('compassBtn');
+            doHaptic([30]); const statusEl = document.getElementById('compassStatus');
             if(isCompassActive) {
-                isCompassActive = false; 
-                playHeavyClack();
-                compassWrap.classList.remove('scanning'); compassWrap.classList.add('locked-effect');
-                setTimeout(() => compassWrap.classList.remove('locked-effect'), 500);
-                window.removeEventListener('deviceorientationabsolute', handleOri); window.removeEventListener('deviceorientation', handleOri);
-                
+                isCompassActive = false; window.removeEventListener('deviceorientationabsolute', handleOri); window.removeEventListener('deviceorientation', handleOri);
                 let finalDir = getDirString(currentHeading); 
-                statusEl.innerHTML = `<span style="color:#C41E3A; font-weight:bold;">${finalDir}</span>`; 
+                statusEl.innerHTML = `[ BOO TÂM LINH BÁO: <span style="color:#fff;">${finalDir}</span> ]`; 
                 document.getElementById('inpFacing').value = finalDir;
-                
-                let booMsg = "Linh hoạt, rình rập";
-                if(finalDir.includes("Tài Lộc")) booMsg = "Vượng khí. Chủ động tấn công ép pot.";
-                if(finalDir.includes("Sát Phạt")) booMsg = "Tà khí. Đánh tight, đợi hand quái vật.";
-                document.getElementById('lblZodiac').innerText = `BOO Tâm Linh báo: Hướng ${finalDir} - ${booMsg}`;
-                
-                markEditChanged();
             } else {
-                isCompassActive = true; 
-                playLightClick(); 
-                compassWrap.classList.add('scanning');
-                statusEl.innerHTML = `[ <span style="color:#aaa;">ĐANG QUÉT PHƯƠNG VỊ...</span> ]`;
-                document.getElementById('lblZodiac').innerText = `BOO Tâm Linh báo: Đang đo tần số tà khí...`;
+                isCompassActive = true; statusEl.innerText = "[ SCANNING... ]";
                 if ('ondeviceorientationabsolute' in window) { window.addEventListener('deviceorientationabsolute', handleOri); } else { window.addEventListener('deviceorientation', handleOri); }
             }
         }
         function handleOri(e) { let alpha = e.webkitCompassHeading || (360 - e.alpha); currentHeading = alpha; document.getElementById('compassDial').style.transform = `rotate(${-alpha}deg)`; }
         function getDirString(a) { 
-            if(a>=112.5&&a<157.5) return "Đông Nam (Tài Lộc)"; 
-            if(a>=247.5&&a<292.5) return "Chính Tây (Sát Phạt)";
-            return "Chính Nam (Bình Ổn)"; 
+            if(a>=112.5&&a<157.5) return "ĐÔNG NAM - TÀI LỘC"; 
+            if(a>=247.5&&a<292.5) return "CHÍNH TÂY - SÁT PHẠT";
+            return "CHÍNH NAM - BÌNH ỔN"; 
         }
 
-        function selectSeat(num) { playLightClick(); document.querySelectorAll('.seat').forEach(el => el.classList.remove('selected')); event.target.classList.add('selected'); document.getElementById('inpPosition').value = `Ghế ${num}`; markEditChanged(); }
+        function selectSeat(num) { doHaptic([30]); document.querySelectorAll('.seat').forEach(el => el.classList.remove('selected')); event.target.classList.add('selected'); document.getElementById('inpPosition').value = `Ghế ${num}`; }
+        function formatCurrency(inp) { let val = inp.value.replace(/[^0-9\-\+]/g, ''); inp.value = val; }
 
-        /* THẮP NHANG THIỀN ĐỊNH (CHUẨN 60 BPM MÕ) */
-        let smokeInterval, moInterval;
+        /* THẮP NHANG 60S */
+        let smokeInterval;
         function executeRitual() {
-            if(document.getElementById('inpFacing').value === 'Chưa quét' || !document.getElementById('inpBuyIn').value) { 
-                playHeavyClack(); document.getElementById('btnAction').innerText = "[ LỖI: THIẾU DỮ LIỆU BÀN NỈ ]"; 
-                setTimeout(() => document.getElementById('btnAction').innerText = "[ THẮP NHANG & XUẤT TRẬN ]", 1500); return; 
-            }
-
-            playHeavyClack(); if(navigator.vibrate) navigator.vibrate([100, 50, 100]);
+            if(document.getElementById('inpFacing').value === 'Chưa quét' || !document.getElementById('inpBuyIn').value) { document.getElementById('btnAction').innerText = "[ ERROR: THIẾU DỮ LIỆU ]"; setTimeout(() => document.getElementById('btnAction').innerText = "[ THẮP NHANG & XUẤT TRẬN ]", 1500); return; }
+            
+            document.getElementById('sfxGong').play().catch(e=>{}); doHaptic([100, 50, 100]);
             let btn = document.getElementById('btnAction'); btn.classList.add('locked'); btn.onclick = null;
-            document.getElementById('altarPanel').scrollTop = document.getElementById('altarPanel').scrollHeight; 
+            document.getElementById('altarPanel').scrollTop = document.getElementById('altarPanel').scrollHeight; // Tự cuộn xuống đáy
             
             document.querySelectorAll('.ember').forEach(e => e.classList.add('burning'));
             smokeInterval = setInterval(createSmoke, 300);
-            
-            // TIẾNG MÕ TỤNG NIỆM CHUẨN 60 BPM (1000ms)
-            moInterval = setInterval(playMoClick, 1000);
 
             let timeLeft = 60;
             let burn = setInterval(() => {
                 timeLeft--;
-                btn.innerText = `[ ĐANG ÉP TÂM LÝ VÀO ZONE - 00:${timeLeft < 10 ? '0'+timeLeft : timeLeft} ]`;
+                btn.innerText = `[ ĐANG KẾT NỐI TÂM LINH - 00:${timeLeft < 10 ? '0'+timeLeft : timeLeft} ]`;
                 let pct = (timeLeft / 60) * 100;
                 document.getElementById('inc1').style.height = `${pct}%`; document.getElementById('inc2').style.height = `${pct * 1.1}%`; document.getElementById('inc3').style.height = `${pct}%`;
 
                 if(timeLeft <= 0) {
-                    clearInterval(burn); clearInterval(smokeInterval); clearInterval(moInterval);
-                    document.querySelectorAll('.ember').forEach(e => e.classList.remove('burning'));
+                    clearInterval(burn); clearInterval(smokeInterval); document.querySelectorAll('.ember').forEach(e => e.classList.remove('burning'));
                     localStorage.setItem('kdrive_altar_session_' + currentUsername, JSON.stringify({ active: true }));
-                    
-                    // KẾT THÚC: 1 TIẾNG CHUÔNG CHÙA LỚN DUY NHẤT
-                    let bigBell = document.getElementById('sfxGong');
-                    bigBell.volume = 1.0; bigBell.play().catch(e=>{});
-                    if(navigator.vibrate) navigator.vibrate([600]); 
-                    
-                    btn.classList.remove('locked'); btn.innerText = "[ ĐÃ THỈNH THẦN ✓ ]"; btn.style.background = "rgba(218,165,32,0.2)";
-                    
-                    // VÀO TRẠNG THÁI THỰC CHIẾN (TẠ LỄ MODE)
-                    setTimeout(() => { openFinishSpace(); }, 2000);
+                    doHaptic([500]); btn.classList.remove('locked'); btn.innerText = "[ ĐÃ THỈNH THẦN ✓ ]"; btn.style.background = "rgba(218,165,32,0.2)";
+                    setTimeout(() => { window.location.href = 'index.html'; }, 2000);
                 }
             }, 1000);
         }
@@ -412,16 +279,13 @@
             });
         }
 
-        /* ĐÓNG SỔ & TẠ LỄ (TIẾNG KHÁNH XẢ THIỀN) */
         function finishSession() {
-            if(!document.getElementById('inpLoss').value) {
-                playHeavyClack(); document.getElementById('btnAction').innerText = "[ NHẬP KẾT QUẢ ĐỂ ĐÓNG SỔ ]"; 
-                setTimeout(() => document.getElementById('btnAction').innerText = "[ ĐÓNG SỔ & TẠ LỄ ]", 1500); return;
-            }
-            playKhanhChime(); 
-            let btn = document.getElementById('btnAction'); btn.innerText = "[ ĐANG KẾT TOÁN SỔ SINH TỬ... ]";
-            setTimeout(() => { localStorage.removeItem('kdrive_altar_session_' + currentUsername); btn.innerText = "[ ĐÃ RỜI BÀN AN TOÀN ✓ ]"; setTimeout(() => { window.location.href = 'index.html'; }, 1500); }, 1000);
+            if(!document.getElementById('inpLoss').value) return;
+            doHaptic([100, 50, 100]); let btn = document.getElementById('btnAction'); btn.innerText = "[ SYSTEM: SAVING... ]";
+            setTimeout(() => { localStorage.removeItem('kdrive_altar_session_' + currentUsername); btn.innerText = "[ RITUAL COMPLETE ✓ ]"; setTimeout(() => { window.location.href = 'index.html'; }, 1500); }, 1000);
         }
+
+        function updateTable() { document.getElementById('setupPhase').style.display = 'block'; document.getElementById('finishPhase').style.display = 'none'; let btn = document.getElementById('btnAction'); btn.innerText = "[ APPLY UPDATE ]"; btn.onclick = () => { doHaptic([50]); window.location.reload(); } }
     </script>
 </body>
 </html>

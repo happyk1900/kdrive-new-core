@@ -13,73 +13,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="kdrive-style.css">
-
-    <style>
-        /* =========================================
-           HỆ THỐNG NỀN LƯỢNG TỬ (QUANTUM CORE BG)
-           Thay thế hoàn toàn ảnh tĩnh 1.webp
-           ========================================= */
-        .quantum-bg {
-            position: absolute;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            background: linear-gradient(180deg, #020611 0%, #051320 100%);
-            overflow: hidden;
-            z-index: 0; 
-            pointer-events: none;
-        }
-
-        /* Vầng sáng năng lượng tại vị trí lâu đài/mặt nạ */
-        .quantum-core {
-            position: absolute;
-            top: 15%; left: 50%;
-            transform: translateX(-50%);
-            width: 80vw; height: 80vw;
-            background: radial-gradient(circle, rgba(0, 229, 255, 0.15) 0%, rgba(0, 255, 136, 0.05) 30%, transparent 70%);
-            animation: corePulse 1.5s infinite alternate ease-in-out;
-        }
-
-        /* Lưới không gian trôi ở vị trí sàn nhà/đồng chip */
-        .quantum-grid {
-            position: absolute;
-            bottom: 0; left: -50vw;
-            width: 200vw; height: 60vh;
-            background-image: 
-                linear-gradient(rgba(0, 255, 136, 0.2) 1px, transparent 1px), 
-                linear-gradient(90deg, rgba(0, 229, 255, 0.1) 1px, transparent 1px);
-            background-size: 40px 40px;
-            transform: perspective(600px) rotateX(75deg);
-            transform-origin: top center;
-            animation: gridFlow 3s infinite linear;
-        }
-
-        /* Các vệt laser quét dọc hệ thống */
-        .data-beam {
-            position: absolute;
-            bottom: 0;
-            width: 2px;
-            height: 80vh;
-            background: linear-gradient(to top, transparent, rgba(0, 229, 255, 0.6), transparent);
-            opacity: 0;
-        }
-        .b1 { left: 15%; animation: beamShoot 2.5s infinite linear 0s; }
-        .b2 { left: 50%; width: 4px; background: linear-gradient(to top, transparent, rgba(0, 255, 136, 0.5), transparent); animation: beamShoot 4s infinite linear 1.5s; }
-        .b3 { left: 85%; animation: beamShoot 3s infinite linear 0.8s; }
-
-        @keyframes corePulse {
-            0% { opacity: 0.5; transform: translateX(-50%) scale(0.95); filter: hue-rotate(0deg); }
-            100% { opacity: 1; transform: translateX(-50%) scale(1.05); filter: hue-rotate(15deg); }
-        }
-        @keyframes gridFlow {
-            0% { background-position: 0 0; }
-            100% { background-position: 0 40px; } /* Phải bằng kích thước ô lưới */
-        }
-        @keyframes beamShoot {
-            0% { transform: translateY(100vh); opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { transform: translateY(-100vh); opacity: 0; }
-        }
-    </style>
 </head>
 <body>
     <div id="whiteFlash" class="white-flash-overlay"></div>
@@ -90,13 +23,7 @@
         <div class="particle-container" id="particleLayer"></div>
         <div class="floating-container" id="effectsContainer"></div>
 
-        <div class="quantum-bg">
-            <div class="quantum-core"></div>
-            <div class="quantum-grid"></div>
-            <div class="data-beam b1"></div>
-            <div class="data-beam b2"></div>
-            <div class="data-beam b3"></div>
-        </div>
+        <img src="https://i.postimg.cc/J4xHjMr7/1.webp" class="kdrive-bg-target" id="kdriveBg">
         
         <div id="lightningRelic" class="lightning-relic" onclick="captureRelic()"></div>
         

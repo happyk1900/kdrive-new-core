@@ -15,12 +15,13 @@ window.addEventListener('DOMContentLoaded', () => {
         setInterval(() => { document.getElementById('bpmText').innerText = (95 + Math.floor(Math.random() * 15)) + " BPM"; }, 2000);
         pulseTerminal("BOO: SESSION RESTORED.");
         initRelic();
+        spawnNeonRain(); // KÍCH HOẠT MƯA NEON
     }
 });
 
 function isValidUsername(str) { return /^[a-zA-Z0-9]{6,15}$/.test(str); }
 function isValidPassword(str) { return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/.test(str); }
-function validateLive(type) { /* Đã ẩn bớt ruột để code gọn, vẫn chạy bình thường */ }
+function validateLive(type) { }
 
 const EYE_OPEN = `<svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>`;
 const EYE_CLOSED = `<svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle><line x1="1" y1="1" x2="23" y2="23"></line></svg>`;
@@ -45,21 +46,94 @@ function toggleMuteSystem() { playCyberSound(); if(!isMuted) { isMuted = true; b
 const AudioContext = window.AudioContext || window.webkitAudioContext; let actx;
 function initAudio() { if(!actx) actx = new AudioContext(); if(actx.state==='suspended') actx.resume(); } 
 document.body.addEventListener('touchstart', initAudio, {once:true});
+
+// Âm thanh Quét hệ thống
 function playCyberSound() { try { initAudio(); const osc = actx.createOscillator(); const gain = actx.createGain(); osc.connect(gain); gain.connect(actx.destination); osc.type = 'triangle'; const now = actx.currentTime; osc.frequency.setValueAtTime(1500, now); osc.frequency.exponentialRampToValueAtTime(400, now + 0.12); gain.gain.setValueAtTime(0.5, now); gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15); osc.start(now); osc.stop(now + 0.15); } catch(e){} }
 function playWhoosh() { if(!actx) return; let osc = actx.createOscillator(); let gain = actx.createGain(); osc.type = 'sine'; osc.frequency.setValueAtTime(300, actx.currentTime); osc.frequency.exponentialRampToValueAtTime(40, actx.currentTime + 1.2); osc.connect(gain); gain.connect(actx.destination); gain.gain.setValueAtTime(0.15, actx.currentTime); gain.gain.linearRampToValueAtTime(0, actx.currentTime + 1.2); osc.start(); osc.stop(actx.currentTime + 1.2); }
 
-// --- HỆ THỐNG ÂM THANH ÉP XUNG ---
+// TÍNH NĂNG MỚI: Âm thanh Click Cơ khí cho 9 Nút
+function playCyberClick() { 
+    if(!actx) initAudio(); 
+    try {
+        const osc = actx.createOscillator(); 
+        const gain = actx.createGain(); 
+        osc.connect(gain); gain.connect(actx.destination); 
+        osc.type = 'square'; 
+        const now = actx.currentTime; 
+        osc.frequency.setValueAtTime(800, now); 
+        osc.frequency.exponentialRampToValueAtTime(100, now + 0.05); 
+        gain.gain.setValueAtTime(0.3, now); 
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05); 
+        osc.start(now); osc.stop(now + 0.05); 
+    } catch(e){} 
+}
+
 function playOverloadRoar() { if(!actx) initAudio(); if(overloadOsc) return; overloadOsc = actx.createOscillator(); overloadGain = actx.createGain(); overloadOsc.type = 'sawtooth'; overloadOsc.frequency.setValueAtTime(50, actx.currentTime); overloadOsc.frequency.linearRampToValueAtTime(130, actx.currentTime + 1.5); overloadGain.gain.setValueAtTime(0, actx.currentTime); overloadGain.gain.linearRampToValueAtTime(0.4, actx.currentTime + 0.3); overloadOsc.connect(overloadGain); overloadGain.connect(actx.destination); overloadOsc.start(); }
 function stopOverloadRoar() { if(overloadGain) { overloadGain.gain.exponentialRampToValueAtTime(0.01, actx.currentTime + 0.2); setTimeout(() => { if(overloadOsc) { overloadOsc.stop(); overloadOsc = null; } overloadGain = null; }, 250); } }
 function startBuzz() { } function stopBuzz() { } function playZapPop() { }
 
+// --- HỆ THỐNG MƯA NEON (CHIP VÀ BÀI) ---
+function spawnNeonRain() {
+    if (!isLoggedIn) return;
+    const container = document.getElementById('effectsContainer');
+    if (!container) return;
+    const symbols = ['♠️', '♥️', '♣️', '♦️', '🪙'];
+    const colors = ['#00e5ff', '#ff3366', '#00ff88', '#ff3366', '#ffd700'];
+    
+    setInterval(() => {
+        let el = document.createElement('div');
+        let idx = Math.floor(Math.random() * symbols.length);
+        el.innerText = symbols[idx];
+        el.className = 'neon-particle';
+        el.style.left = Math.random() * 90 + 5 + 'vw';
+        el.style.color = colors[idx];
+        el.style.textShadow = `0 0 10px ${colors[idx]}, 0 0 20px ${colors[idx]}`;
+        el.style.animationDuration = (Math.random() * 3 + 4) + 's'; // Rơi từ 4-7 giây
+        container.appendChild(el);
+        setTimeout(() => { if(el.parentNode) el.remove(); }, 7000);
+    }, 900); // Mỗi 0.9s rớt 1 hạt
+}
+
 const hexCanvas = document.getElementById('hexCanvas'); const hexCtx = hexCanvas.getContext('2d'); let hexGrid = []; let canvasW = 0, canvasH = 0;
 function initHexGrid() { hexCanvas.width = window.innerWidth; hexCanvas.height = window.innerHeight; canvasW = hexCanvas.width; canvasH = hexCanvas.height; hexGrid = []; let r = 24; let h3 = Math.sqrt(3) * r; let cols = Math.ceil(canvasW / h3) + 1; let rows = Math.ceil(canvasH / (r*1.5)) + 1; for(let row=0; row<rows; row++) { for(let col=0; col<cols; col++) { hexGrid.push({x: col * h3 + (row%2===1 ? h3/2 : 0), y: row * r*1.5, energy: 0}); } } }
 window.addEventListener('resize', initHexGrid); initHexGrid();
-function renderCanvas() { hexCtx.clearRect(0, 0, canvasW, canvasH); hexCtx.lineWidth = 1.2; let isStruggling = document.getElementById('cubeWrapper').classList.contains('overload-active'); for(let hex of hexGrid) { if(isLoggedIn && isStruggling && Math.hypot(hex.x - canvasW/2, hex.y - canvasH*0.516) < 120) hex.energy = Math.random() * 0.9; hex.energy *= 0.88; let alpha = (isLoggedIn ? 0.12 : 0.03) + hex.energy; if(alpha>1) alpha=1; let color = (isStruggling && hex.energy>0.1) ? '255,51,51' : '0,255,136'; hexCtx.strokeStyle = `rgba(${color},${alpha})`; hexCtx.fillStyle = alpha > 0.22 ? `rgba(${color},${(alpha-0.15)*0.3})` : 'transparent'; hexCtx.beginPath(); for (let i=0; i<6; i++) { let a = Math.PI/180*(60*i-30); hexCtx.lineTo(hex.x + 20*Math.cos(a), hex.y + 20*Math.sin(a)); } hexCtx.closePath(); hexCtx.stroke(); if(hexCtx.fillStyle!=='transparent') hexCtx.fill(); } requestAnimationFrame(renderCanvas); }
+
+function renderCanvas() { 
+    hexCtx.clearRect(0, 0, canvasW, canvasH); hexCtx.lineWidth = 1.2; 
+    let isStruggling = document.getElementById('cubeWrapper').classList.contains('overload-active'); 
+    let isPlasma = document.getElementById('cubeWrapper').classList.contains('plasma-active'); 
+
+    for(let hex of hexGrid) { 
+        // Ép xung đỏ: Bán kính rộng (120)
+        if(isLoggedIn && isStruggling && Math.hypot(hex.x - canvasW/2, hex.y - canvasH*0.516) < 120) hex.energy = Math.random() * 0.9; 
+        
+        // Nhấn nút nhòe tím: Bán kính hẹp gọn gàng (45)
+        if(isLoggedIn && isPlasma && Math.hypot(hex.x - canvasW/2, hex.y - canvasH*0.516) < 45) hex.energy = Math.random() * 0.9; 
+
+        hex.energy *= 0.88; 
+        let alpha = (isLoggedIn ? 0.12 : 0.03) + hex.energy; 
+        if(alpha>1) alpha=1; 
+        
+        // Thuật toán màu sắc
+        let color = '0,255,136'; // Xanh mặc định
+        if (isStruggling && hex.energy>0.1) color = '255,51,51'; // Đỏ khi gầm rú 2 ngón tay
+        else if (isPlasma && hex.energy>0.1) color = '176,38,255'; // TÍM PLASMA khi bấm nút tĩnh
+
+        hexCtx.strokeStyle = `rgba(${color},${alpha})`; 
+        hexCtx.fillStyle = alpha > 0.22 ? `rgba(${color},${(alpha-0.15)*0.3})` : 'transparent'; 
+        
+        hexCtx.beginPath(); 
+        for (let i=0; i<6; i++) { 
+            let a = Math.PI/180*(60*i-30); 
+            hexCtx.lineTo(hex.x + 20*Math.cos(a), hex.y + 20*Math.sin(a)); 
+        } 
+        hexCtx.closePath(); hexCtx.stroke(); 
+        if(hexCtx.fillStyle!=='transparent') hexCtx.fill(); 
+    } 
+    requestAnimationFrame(renderCanvas); 
+}
 renderCanvas();
 
-// --- BẮT MẠCH 2 NGÓN TAY (ÉP XUNG CÓ ÂM THANH/RUNG) ---
 const cubeWrapperNode = document.getElementById('cubeWrapper');
 cubeWrapperNode.addEventListener('touchstart', (e) => {
     if (!isLoggedIn) return;
@@ -80,7 +154,7 @@ cubeWrapperNode.addEventListener('touchmove', (e) => {
     
     if(scale > 1.4 && !cubeWrapperNode.classList.contains('overload-active')) {
         cubeWrapperNode.classList.add('overload-active');
-        playOverloadRoar(); // Gầm rú
+        playOverloadRoar();
         if(navigator.vibrate) navigator.vibrate([50, 50, 50, 50]); 
     } else if (scale > 1.4 && cubeWrapperNode.classList.contains('overload-active')) {
         if(navigator.vibrate && Math.random() > 0.8) navigator.vibrate(20); 
@@ -92,14 +166,13 @@ cubeWrapperNode.addEventListener('touchend', (e) => {
         isPinching = false;
         cubeWrapperNode.style.setProperty('--pinch-scale', 1);
         cubeWrapperNode.classList.remove('overload-active');
-        stopOverloadRoar(); // Xả hơi
+        stopOverloadRoar();
         if(navigator.vibrate) navigator.vibrate(0);
     }
 });
 
 function triggerHexagonShield() { if(!isLoggedIn) return; for(let hex of hexGrid) { if(Math.hypot(hex.x - window.innerWidth/2, hex.y - window.innerHeight*0.516) < 70) hex.energy = 0.6; } }
 
-// --- QUỸ ĐẠO SÉT HÒM CHẬM RÃI, LƠ LỬNG ---
 let relicEl = document.getElementById('lightningRelic'); let rx = window.innerWidth / 2, ry = window.innerHeight / 2; let targetRx = rx, targetRy = ry; let relicActive = false; let trailTimer = 0; let isRelicCharged = false; 
 function checkDailyEnergy() { return false; }
 function initRelic() { relicActive = true; relicEl.style.display = 'block'; isRelicCharged = checkDailyEnergy(); if (!isRelicCharged) { relicEl.classList.add('relic-active'); relicEl.classList.remove('relic-passive'); startBuzz(); } else { relicEl.classList.add('relic-passive'); relicEl.classList.remove('relic-active'); } moveRelic(); }
@@ -110,7 +183,7 @@ function moveRelic() {
         targetRx = 40 + Math.random() * (window.innerWidth - 80); 
         targetRy = 40 + Math.random() * (window.innerHeight - 80); 
     } 
-    let speed = 0.003; // Vận tốc lơ lửng cố định
+    let speed = 0.003; 
     rx += dx * speed; ry += dy * speed; 
     relicEl.style.left = rx + 'px'; relicEl.style.top = ry + 'px'; 
     trailTimer++; let trailFreq = isRelicCharged ? 8 : 4; 
@@ -128,10 +201,10 @@ function captureRelic() { if(!relicActive) return; if(isMusicPlaying && !isMuted
 
 function callAPI(action, params, callbackName, onSuccess, onError) { let finalUrl = API_URL + "?action=" + action; for (let key in params) { finalUrl += "&" + key + "=" + encodeURIComponent(params[key]); } finalUrl += "&callback=" + callbackName; window[callbackName] = function(res) { delete window[callbackName]; let scriptEl = document.getElementById(callbackName); if(scriptEl) document.body.removeChild(scriptEl); if (res && res.success) onSuccess(res); else onError(res ? res.msg : "LỖI MÁY CHỦ!"); }; let script = document.createElement('script'); script.id = callbackName; script.src = finalUrl; script.onerror = function() { onError("LỖI MẠNG!"); }; document.body.appendChild(script); }
 
-function submitLogin() { try { playCyberSound(); } catch(e) {} var acc = document.getElementById('accInput').value.trim(); var code = document.getElementById('passcodeInput').value.trim(); var statusEl = document.getElementById('loginStatus'); if(acc === "" || code === "") { statusEl.innerHTML = "[LỖI]: ĐIỀN ĐỦ THÔNG TIN!"; statusEl.style.color = "#ff3333"; return; } statusEl.innerHTML = "🛰️ BOO ĐANG KIỂM TRA..."; statusEl.style.color = "#00e5ff"; callAPI('checkLogin', {username: acc, password: code}, 'cb_login', function(res) { sessionStorage.setItem('kdrive_session', 'active'); sessionStorage.setItem('kdrive_username', acc); currentUsername = acc; document.getElementById('loginPanelContainer').style.display = 'none'; unlockInteraction(); loginDrumAudio.currentTime = 0; loginDrumAudio.play().catch(e=>{}); if(navigator.vibrate) navigator.vibrate([200, 100, 200]); isLoggedIn = true; triggerHexagonShield(); let hud = document.getElementById('protocolGuide'); if(hud) hud.remove(); document.getElementById('logoutHud').classList.add('logout-active'); document.getElementById('cyberAltarBtn').classList.add('logged-in'); let hIcon = document.getElementById('heartIcon'); hIcon.className = 'heart-icon active'; hIcon.innerHTML = "❤️"; setInterval(() => { document.getElementById('bpmText').innerText = (95 + Math.floor(Math.random() * 15)) + " BPM"; }, 2000); document.getElementById('mainWrapper').classList.add('shake-active'); setTimeout(() => document.getElementById('mainWrapper').classList.remove('shake-active'), 600); pulseTerminal("BOO: AUTHORIZED."); const banner = document.getElementById('welcomeHologram'); const tag = document.getElementById('welcomeTag'); banner.style.border = `2px solid #00ff88`; banner.style.boxShadow = `0 0 25px #00ff88, inset 0 0 15px rgba(0,0,0,0.5)`; tag.style.color = "#00ff88"; tag.innerHTML = `[ 🥷 ${res.nickname || acc} ]`; document.getElementById('welcomeBody').innerHTML = "Hệ thống BOO đã sẵn sàng nhận lệnh!"; banner.classList.add('banner-strike'); setTimeout(() => { banner.classList.remove('banner-strike'); initRelic(); }, 3500); }, function(msg) { statusEl.style.color = "#ff3333"; statusEl.innerHTML = msg; }); }
+function submitLogin() { try { playCyberSound(); } catch(e) {} var acc = document.getElementById('accInput').value.trim(); var code = document.getElementById('passcodeInput').value.trim(); var statusEl = document.getElementById('loginStatus'); if(acc === "" || code === "") { statusEl.innerHTML = "[LỖI]: ĐIỀN ĐỦ THÔNG TIN!"; statusEl.style.color = "#ff3333"; return; } statusEl.innerHTML = "🛰️ BOO ĐANG KIỂM TRA..."; statusEl.style.color = "#00e5ff"; callAPI('checkLogin', {username: acc, password: code}, 'cb_login', function(res) { sessionStorage.setItem('kdrive_session', 'active'); sessionStorage.setItem('kdrive_username', acc); currentUsername = acc; document.getElementById('loginPanelContainer').style.display = 'none'; unlockInteraction(); loginDrumAudio.currentTime = 0; loginDrumAudio.play().catch(e=>{}); if(navigator.vibrate) navigator.vibrate([200, 100, 200]); isLoggedIn = true; triggerHexagonShield(); let hud = document.getElementById('protocolGuide'); if(hud) hud.remove(); document.getElementById('logoutHud').classList.add('logout-active'); document.getElementById('cyberAltarBtn').classList.add('logged-in'); let hIcon = document.getElementById('heartIcon'); hIcon.className = 'heart-icon active'; hIcon.innerHTML = "❤️"; setInterval(() => { document.getElementById('bpmText').innerText = (95 + Math.floor(Math.random() * 15)) + " BPM"; }, 2000); document.getElementById('mainWrapper').classList.add('shake-active'); setTimeout(() => document.getElementById('mainWrapper').classList.remove('shake-active'), 600); pulseTerminal("BOO: AUTHORIZED."); const banner = document.getElementById('welcomeHologram'); const tag = document.getElementById('welcomeTag'); banner.style.border = `2px solid #00ff88`; banner.style.boxShadow = `0 0 25px #00ff88, inset 0 0 15px rgba(0,0,0,0.5)`; tag.style.color = "#00ff88"; tag.innerHTML = `[ 🥷 ${res.nickname || acc} ]`; document.getElementById('welcomeBody').innerHTML = "Hệ thống BOO đã sẵn sàng nhận lệnh!"; banner.classList.add('banner-strike'); setTimeout(() => { banner.classList.remove('banner-strike'); initRelic(); spawnNeonRain(); }, 3500); }, function(msg) { statusEl.style.color = "#ff3333"; statusEl.innerHTML = msg; }); }
 function showLogoutConfirm() { try { playCyberSound(); } catch(e){} document.getElementById('logoutConfirmPanel').style.display = 'flex'; lockInteraction(); }
 function confirmLogout(isYes) { try { playCyberSound(); } catch(e){} if(isYes) { document.getElementById('logoutConfirmPanel').style.display = 'none'; pulseTerminal("BOO: LOGGING OUT..."); sessionStorage.removeItem('kdrive_session'); sessionStorage.removeItem('kdrive_username'); setTimeout(() => { window.location.reload(); }, 500); } else { document.getElementById('logoutConfirmPanel').style.display = 'none'; unlockInteraction(); } }
-function submitChangePass() { /* ... Logic đổi pass */ }
+function submitChangePass() { }
 function switchPanel(panelName) { try { playCyberSound(); } catch(e){} document.getElementById('panel-login').style.display = 'none'; document.getElementById('panel-register').style.display = 'none'; document.getElementById('panel-otp').style.display = 'none'; document.getElementById('panel-forgot').style.display = 'none'; document.getElementById('panel-' + panelName).style.display = 'flex'; }
 
 function pulseTerminal(text) { const terminal = document.getElementById('terminalStream'); const newLine = document.createElement('div'); newLine.className = 'terminal-line'; newLine.innerText = `> ${text}`; terminal.appendChild(newLine); if(terminal.children.length > 3) terminal.removeChild(terminal.firstChild); }
@@ -140,10 +213,11 @@ function checkLoginGuard() { if (!isLoggedIn) { try { playCyberSound(); } catch(
 
 let capturedVideoUrl = null; let hasUnreadVideo = false;
 
-// --- NÚT QUAY PHIM: BIẾN HÌNH MÁY QUAY, TRẢ LẠI KHI XONG ---
+// KÍCH HOẠT CAMERA -> CUBE PHÂN RÃ
 function openSecretCameraGuard(element) { 
     if (!checkLoginGuard()) return; 
     if(navigator.vibrate) navigator.vibrate(50);
+    playCyberClick();
     try { cameraShutterAudio.play().catch(e=>{}); } catch(e){}
     
     let cube = document.getElementById('cubeWrapper');
@@ -154,7 +228,6 @@ function openSecretCameraGuard(element) {
     setTimeout(() => { document.getElementById('hiddenCamera').click(); }, 600);
 }
 
-// Bắt sự kiện khi Hủy hoặc Tắt Camera (Điện thoại Focus lại App)
 window.addEventListener('focus', () => {
     document.getElementById('cubeWrapper').classList.remove('camera-mode');
 });
@@ -162,7 +235,7 @@ window.addEventListener('focus', () => {
 function handleVideoUpload(event) { const file = event.target.files[0]; if (file) { capturedVideoUrl = URL.createObjectURL(file); document.getElementById('capturedVideoPlayer').src = capturedVideoUrl; hasUnreadVideo = true; triggerBubble(); } document.getElementById('cubeWrapper').classList.remove('camera-mode'); }
 function triggerBubble() { if (!hasUnreadVideo) return; const bubble = document.getElementById('samuraiBubble'); bubble.classList.add('bubble-show'); document.getElementById('bubbleText').innerHTML = "⚠️ MẬT THƯ ĐẾN"; }
 
-// --- NÚT XEM VIDEO: BIẾN HÌNH MÁY CHIẾU ---
+// XEM VIDEO -> CUBE ÉP PHẲNG LẠI THÀNH MÁY CHIẾU
 function processSamuraiAction(element) { 
     if (!hasUnreadVideo || !capturedVideoUrl) { 
         triggerHexagonShield(); 
@@ -186,24 +259,24 @@ function processSamuraiAction(element) {
 function closeVideoModule() { 
     document.getElementById('videoPopup').classList.remove('popup-open'); 
     document.getElementById('capturedVideoPlayer').pause(); 
-    
-    // Thu dọn Lõi Máy Chiếu
     document.getElementById('cubeWrapper').classList.remove('projector-mode'); 
     document.querySelector('.projector-beam').classList.remove('beam-on');
 }
 
-// --- NÚT TĨNH: CHỈ CHỚP ĐỎ + RUNG (KHÔNG GẦM RÚ) ---
+// BẤM NÚT TĨNH -> PLASMA TÍM MỜ ẢO + ÂM THANH CLICK
 function triggerStaticNode(element) { 
     if (!checkLoginGuard()) return; 
-    triggerHexagonShield(); 
-    if(navigator.vibrate) navigator.vibrate([50]); // Chỉ rung tạch 1 cái
+    
+    // Kích hoạt rung và phát âm thanh cơ khí
+    if(navigator.vibrate) navigator.vibrate([30]); 
+    playCyberClick();
     
     let cube = document.getElementById('cubeWrapper');
-    cube.classList.add('overload-active');
+    cube.classList.add('plasma-active'); // Đổi sang hiệu ứng Tím Plasma thay vì Đỏ Báo Động
     
     setTimeout(() => {
-        cube.classList.remove('overload-active');
-    }, 400); // Tự tắt sau 0.4s
+        cube.classList.remove('plasma-active');
+    }, 500); // Rút ngắn thời gian nhòe xuống 0.5s cho tinh tế
 }
 
 function rotateWallpapersGuard(element) { currentWallpaperIndex = (currentWallpaperIndex + 1) % base64Wallpapers.length; document.getElementById('kdriveBg').src = base64Wallpapers[currentWallpaperIndex]; }

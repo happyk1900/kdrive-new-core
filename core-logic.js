@@ -5,6 +5,19 @@ function lockInteraction() { document.body.classList.add('popups-active'); }
 function unlockInteraction() { document.body.classList.remove('popups-active'); }
 
 window.addEventListener('DOMContentLoaded', () => {
+    // Tự động đúc lõi Venom (Phantom Cube) vào trong lõi chính
+    let mainCube = document.getElementById('wireframeCube');
+    if(mainCube) {
+        let phantom = document.createElement('div');
+        phantom.className = 'phantom-cube';
+        phantom.innerHTML = `
+            <div class="cube-face front"></div><div class="cube-face back"></div>
+            <div class="cube-face right"></div><div class="cube-face left"></div>
+            <div class="cube-face top"></div><div class="cube-face bottom"></div>
+        `;
+        mainCube.appendChild(phantom);
+    }
+
     if (sessionStorage.getItem('kdrive_session') === 'active') {
         document.getElementById('loginPanelContainer').style.display = 'none';
         isLoggedIn = true; triggerHexagonShield();
@@ -47,23 +60,36 @@ const AudioContext = window.AudioContext || window.webkitAudioContext; let actx;
 function initAudio() { if(!actx) actx = new AudioContext(); if(actx.state==='suspended') actx.resume(); } 
 document.body.addEventListener('touchstart', initAudio, {once:true});
 
+// Âm thanh cơ bản
 function playCyberSound() { try { initAudio(); const osc = actx.createOscillator(); const gain = actx.createGain(); osc.connect(gain); gain.connect(actx.destination); osc.type = 'triangle'; const now = actx.currentTime; osc.frequency.setValueAtTime(1500, now); osc.frequency.exponentialRampToValueAtTime(400, now + 0.12); gain.gain.setValueAtTime(0.5, now); gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15); osc.start(now); osc.stop(now + 0.15); } catch(e){} }
-
-// ÂM THANH NÚT BẤM CƠ KHÍ SẮC LẠNH
 function playCyberClick() { 
     if(!actx) initAudio(); 
     try {
-        const osc = actx.createOscillator(); 
-        const gain = actx.createGain(); 
-        osc.connect(gain); gain.connect(actx.destination); 
-        osc.type = 'square'; 
-        const now = actx.currentTime; 
-        osc.frequency.setValueAtTime(800, now); 
-        osc.frequency.exponentialRampToValueAtTime(100, now + 0.05); 
-        gain.gain.setValueAtTime(0.3, now); 
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05); 
+        const osc = actx.createOscillator(); const gain = actx.createGain(); 
+        osc.connect(gain); gain.connect(actx.destination); osc.type = 'square'; 
+        const now = actx.currentTime; osc.frequency.setValueAtTime(800, now); osc.frequency.exponentialRampToValueAtTime(100, now + 0.05); 
+        gain.gain.setValueAtTime(0.3, now); gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05); 
         osc.start(now); osc.stop(now + 0.05); 
     } catch(e){} 
+}
+
+// ÂM THANH KIẾM NHẬT (3 TIẾNG KENG)
+function playKatanaClash() {
+    if(!actx) initAudio();
+    try {
+        let time = actx.currentTime;
+        for(let i=0; i<3; i++) {
+            let t = time + (i * 0.15); // Mỗi tiếng chém cách nhau 150ms
+            let osc1 = actx.createOscillator(); let osc2 = actx.createOscillator(); let gain = actx.createGain();
+            osc1.connect(gain); osc2.connect(gain); gain.connect(actx.destination);
+            osc1.type = 'square'; osc2.type = 'triangle';
+            osc1.frequency.setValueAtTime(1800, t); osc1.frequency.exponentialRampToValueAtTime(400, t + 0.15);
+            osc2.frequency.setValueAtTime(1200, t); osc2.frequency.exponentialRampToValueAtTime(200, t + 0.15);
+            gain.gain.setValueAtTime(0.4, t); gain.gain.exponentialRampToValueAtTime(0.001, t + 0.15);
+            osc1.start(t); osc2.start(t);
+            osc1.stop(t + 0.15); osc2.stop(t + 0.15);
+        }
+    } catch(e){}
 }
 
 function playOverloadRoar() { if(!actx) initAudio(); if(overloadOsc) return; overloadOsc = actx.createOscillator(); overloadGain = actx.createGain(); overloadOsc.type = 'sawtooth'; overloadOsc.frequency.setValueAtTime(50, actx.currentTime); overloadOsc.frequency.linearRampToValueAtTime(130, actx.currentTime + 1.5); overloadGain.gain.setValueAtTime(0, actx.currentTime); overloadGain.gain.linearRampToValueAtTime(0.4, actx.currentTime + 0.3); overloadOsc.connect(overloadGain); overloadGain.connect(actx.destination); overloadOsc.start(); }
@@ -71,7 +97,7 @@ function stopOverloadRoar() { if(overloadGain) { overloadGain.gain.exponentialRa
 function startBuzz() { } function stopBuzz() { } function playZapPop() { }
 
 // ===================================================
-// TRƯỜNG NĂNG LƯỢNG: HIỆN HÌNH TỪ HƯ VÔ, PHÂN LOẠI MÀU
+// TRƯỜNG NĂNG LƯỢNG: HIỆN HÌNH TỪ HƯ VÔ
 // ===================================================
 function spawnNeonRain() {
     if (!isLoggedIn) return;
@@ -80,16 +106,16 @@ function spawnNeonRain() {
     
     const suits = ['♠', '♥', '♣', '♦'];
     const values = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
-    const redValues = ['A', 'K', 'Q', 'J']; // Thẻ Quyền lực màu Đỏ
+    const redValues = ['A', 'K', 'Q', 'J']; 
     const chipColors = ['#ffd700', '#ff66b2', '#b026ff']; // Vàng, Hồng, Tím
     
-    // Tần suất 2.5s (2500ms) tạo 1 vật thể - tinh giản, tĩnh lặng
+    // Tần suất chậm: 2.5s tạo 1 vật thể
     setInterval(() => {
         let el = document.createElement('div');
         let randObj = Math.random(); 
 
         if (randObj > 0.5) { 
-            // 50% LÀ LÁ BÀI
+            // LÁ BÀI
             let suit = suits[Math.floor(Math.random() * suits.length)];
             let val = values[Math.floor(Math.random() * values.length)];
             el.className = 'neon-card-real';
@@ -101,27 +127,26 @@ function spawnNeonRain() {
             el.innerHTML = `<span class="val">${val}</span><span class="suit">${suit}</span>`;
             
         } else if (randObj > 0.25) { 
-            // 25% LÀ TIỀN GIẤY (Chữ nhật, Xanh lục)
+            // ĐÔ LA NÉT LIỀN, KÝ TỰ $
             el.className = 'neon-dollar-real';
-            el.innerHTML = '<span>100</span>';
-            el.style.color = '#00ff00';
-            el.style.borderColor = 'rgba(0, 255, 0, 0.5)';
+            el.innerHTML = '<span>$</span>';
+            el.style.color = '#00ff88';
+            el.style.borderColor = 'rgba(0, 255, 136, 0.5)';
             
         } else { 
-            // 25% LÀ ĐỒNG CHIP (Đổi thành chữ C)
+            // ĐỒNG CHIP CHỮ C
             el.className = 'neon-coin-real';
             el.innerHTML = '<span>C</span>';
             el.style.color = chipColors[Math.floor(Math.random() * chipColors.length)];
         }
 
-        // TỌA ĐỘ HƯ VÔ: Xuất hiện rải rác giữa màn hình
+        // TỌA ĐỘ HƯ VÔ
         el.style.left = Math.random() * 90 + 5 + 'vw';
         el.style.top = Math.random() * 60 + 5 + 'vh'; 
         
         let scale = Math.random() * 0.7 + 0.6; 
         el.style.setProperty('--drop-scale', scale);
         
-        // Hoạt ảnh rơi và tan biến trong 4 - 7s
         let duration = Math.random() * 3 + 4; 
         el.style.setProperty('--max-opacity', (Math.random() * 0.4 + 0.5).toString());
         el.style.animation = `quantumMaterialize ${duration}s ease-in-out forwards`;
@@ -240,9 +265,6 @@ function checkLoginGuard() { if (!isLoggedIn) { try { playCyberSound(); } catch(
 
 let capturedVideoUrl = null; let hasUnreadVideo = false;
 
-// ===================================================
-// NÚT CAMERA: Thu nạp (Xoay nhanh, Đỏ máu, Pulse)
-// ===================================================
 function openSecretCameraGuard(element) { 
     if (!checkLoginGuard()) return; 
     if(navigator.vibrate) navigator.vibrate(50);
@@ -264,57 +286,4 @@ function handleVideoUpload(event) { const file = event.target.files[0]; if (file
 function triggerBubble() { if (!hasUnreadVideo) return; const bubble = document.getElementById('samuraiBubble'); bubble.classList.add('bubble-show'); document.getElementById('bubbleText').innerHTML = "⚠️ MẬT THƯ ĐẾN"; }
 
 // ===================================================
-// NÚT VIDEO: Trích xuất (Phóng to, Xanh Cyan chiếu rọi)
-// ===================================================
-function processSamuraiAction(element) { 
-    if (!hasUnreadVideo || !capturedVideoUrl) { 
-        triggerHexagonShield(); 
-        if(navigator.vibrate) navigator.vibrate(50);
-        return; 
-    } 
-    if(navigator.vibrate) navigator.vibrate([30, 50, 30]);
-    try { playCyberSound(); } catch(e){}
-    
-    let cube = document.getElementById('cubeWrapper');
-    cube.classList.remove('camera-rec-mode');
-    cube.classList.add('video-play-mode');
-    document.querySelector('.projector-beam').classList.add('beam-on');
-
-    setTimeout(() => {
-        document.getElementById('videoPopup').classList.add('popup-open'); 
-        document.getElementById('capturedVideoPlayer').play(); 
-    }, 600);
-}
-
-function closeVideoModule() { 
-    document.getElementById('videoPopup').classList.remove('popup-open'); 
-    document.getElementById('capturedVideoPlayer').pause(); 
-    document.getElementById('cubeWrapper').classList.remove('video-play-mode'); 
-    document.querySelector('.projector-beam').classList.remove('beam-on');
-}
-
-// ===================================================
-// NÚT TĨNH: Hồn lìa khỏi xác (Venom Soul Phantom)
-// ===================================================
-function triggerStaticNode(element) { 
-    if (!checkLoginGuard()) return; 
-    
-    if(navigator.vibrate) navigator.vibrate([30]); 
-    playCyberClick();
-    
-    let cube = document.getElementById('cubeWrapper');
-    cube.classList.add('phantom-split'); 
-    
-    // Gỡ class sau 600ms (khớp đúng thời lượng CSS Animation)
-    setTimeout(() => {
-        cube.classList.remove('phantom-split');
-    }, 600); 
-}
-
-function rotateWallpapersGuard(element) { currentWallpaperIndex = (currentWallpaperIndex + 1) % base64Wallpapers.length; document.getElementById('kdriveBg').src = base64Wallpapers[currentWallpaperIndex]; }
-function showLoginPanel() { document.getElementById('loginPanelContainer').style.display = 'flex'; lockInteraction(); }
-function closeLoginPanel() { document.getElementById('loginPanelContainer').style.display = 'none'; unlockInteraction(); }
-function showNinjaInfo() { document.getElementById('ninjaPopup').style.display = 'flex'; lockInteraction(); }
-function closeNinjaInfo() { document.getElementById('ninjaPopup').style.display = 'none'; unlockInteraction(); }
-function openChangePassPanel() { document.getElementById('changePassPanel').style.display = 'flex'; }
-function closeChangePassPanel() { document.getElementById('changePassPanel').style.display = 'none'; }
+// NÚT VIDEO: TRÍCH XUẤT (KIẾM NH

@@ -48,8 +48,8 @@ function initAudio() { if(!actx) actx = new AudioContext(); if(actx.state==='sus
 document.body.addEventListener('touchstart', initAudio, {once:true});
 
 function playCyberSound() { try { initAudio(); const osc = actx.createOscillator(); const gain = actx.createGain(); osc.connect(gain); gain.connect(actx.destination); osc.type = 'triangle'; const now = actx.currentTime; osc.frequency.setValueAtTime(1500, now); osc.frequency.exponentialRampToValueAtTime(400, now + 0.12); gain.gain.setValueAtTime(0.5, now); gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15); osc.start(now); osc.stop(now + 0.15); } catch(e){} }
-function playWhoosh() { if(!actx) return; let osc = actx.createOscillator(); let gain = actx.createGain(); osc.type = 'sine'; osc.frequency.setValueAtTime(300, actx.currentTime); osc.frequency.exponentialRampToValueAtTime(40, actx.currentTime + 1.2); osc.connect(gain); gain.connect(actx.destination); gain.gain.setValueAtTime(0.15, actx.currentTime); gain.gain.linearRampToValueAtTime(0, actx.currentTime + 1.2); osc.start(); osc.stop(actx.currentTime + 1.2); }
 
+// ÂM THANH NÚT BẤM CƠ KHÍ SẮC LẠNH
 function playCyberClick() { 
     if(!actx) initAudio(); 
     try {
@@ -83,6 +83,7 @@ function spawnNeonRain() {
     const redValues = ['A', 'K', 'Q', 'J']; // Thẻ Quyền lực màu Đỏ
     const chipColors = ['#ffd700', '#ff66b2', '#b026ff']; // Vàng, Hồng, Tím
     
+    // Tần suất 2.5s (2500ms) tạo 1 vật thể - tinh giản, tĩnh lặng
     setInterval(() => {
         let el = document.createElement('div');
         let randObj = Math.random(); 
@@ -92,14 +93,10 @@ function spawnNeonRain() {
             let suit = suits[Math.floor(Math.random() * suits.length)];
             let val = values[Math.floor(Math.random() * values.length)];
             el.className = 'neon-card-real';
-            
-            // Xử lý bài Đỏ (AKQJ) và Bài Xanh (Các số còn lại)
             if (redValues.includes(val)) {
-                el.style.color = '#ff3366'; 
-                el.style.borderColor = 'rgba(255, 51, 102, 0.6)';
+                el.style.color = '#ff3366'; el.style.borderColor = 'rgba(255, 51, 102, 0.6)';
             } else {
-                el.style.color = '#00ff88'; 
-                el.style.borderColor = 'rgba(0, 255, 136, 0.6)';
+                el.style.color = '#00ff88'; el.style.borderColor = 'rgba(0, 255, 136, 0.6)';
             }
             el.innerHTML = `<span class="val">${val}</span><span class="suit">${suit}</span>`;
             
@@ -111,34 +108,27 @@ function spawnNeonRain() {
             el.style.borderColor = 'rgba(0, 255, 0, 0.5)';
             
         } else { 
-            // 25% LÀ ĐỒNG CHIP (Vàng/Hồng/Tím)
+            // 25% LÀ ĐỒNG CHIP (Đổi thành chữ C)
             el.className = 'neon-coin-real';
-            el.innerHTML = '<span>K</span>';
+            el.innerHTML = '<span>C</span>';
             el.style.color = chipColors[Math.floor(Math.random() * chipColors.length)];
         }
 
-        // Hiện ra từ tọa độ ngẫu nhiên
-        el.style.left = Math.random() * 95 + 'vw';
+        // TỌA ĐỘ HƯ VÔ: Xuất hiện rải rác giữa màn hình
+        el.style.left = Math.random() * 90 + 5 + 'vw';
+        el.style.top = Math.random() * 60 + 5 + 'vh'; 
+        
         let scale = Math.random() * 0.7 + 0.6; 
         el.style.setProperty('--drop-scale', scale);
         
-        // Tỷ lệ tan biến giữa chừng (40%)
-        let duration = Math.random() * 5 + 7; // Rơi rất chậm (7-12s)
-        let isFadeEarly = Math.random() > 0.6; 
-        
-        if (isFadeEarly) {
-            el.style.setProperty('--max-opacity', '0.85');
-            el.style.animationName = 'neonFallVoidEarly'; // Keyframe biến mất ở giữa màn hình
-        } else {
-            el.style.setProperty('--max-opacity', '0.85');
-            el.style.animationName = 'neonFallVoid'; // Trôi đến hết màn hình
-        }
-        
-        el.style.animationDuration = duration + 's'; 
+        // Hoạt ảnh rơi và tan biến trong 4 - 7s
+        let duration = Math.random() * 3 + 4; 
+        el.style.setProperty('--max-opacity', (Math.random() * 0.4 + 0.5).toString());
+        el.style.animation = `quantumMaterialize ${duration}s ease-in-out forwards`;
         
         container.appendChild(el);
         setTimeout(() => { if(el.parentNode) el.remove(); }, duration * 1000);
-    }, 800); // 0.8s sinh ra 1 vật thể
+    }, 2500); 
 }
 
 const hexCanvas = document.getElementById('hexCanvas'); const hexCtx = hexCanvas.getContext('2d'); let hexGrid = []; let canvasW = 0, canvasH = 0;
@@ -251,7 +241,7 @@ function checkLoginGuard() { if (!isLoggedIn) { try { playCyberSound(); } catch(
 let capturedVideoUrl = null; let hasUnreadVideo = false;
 
 // ===================================================
-// NÚT CAMERA: THU NẠP DỮ LIỆU (THU NHỎ, QUAY NHANH, ĐỎ)
+// NÚT CAMERA: Thu nạp (Xoay nhanh, Đỏ máu, Pulse)
 // ===================================================
 function openSecretCameraGuard(element) { 
     if (!checkLoginGuard()) return; 
@@ -263,21 +253,18 @@ function openSecretCameraGuard(element) {
     cube.classList.remove('video-play-mode');
     document.querySelector('.projector-beam').classList.remove('beam-on');
     
-    // Kích hoạt lõi ghi hình
     cube.classList.add('camera-rec-mode');
     
     setTimeout(() => { document.getElementById('hiddenCamera').click(); }, 600);
 }
 
-window.addEventListener('focus', () => {
-    document.getElementById('cubeWrapper').classList.remove('camera-rec-mode');
-});
+window.addEventListener('focus', () => { document.getElementById('cubeWrapper').classList.remove('camera-rec-mode'); });
 
 function handleVideoUpload(event) { const file = event.target.files[0]; if (file) { capturedVideoUrl = URL.createObjectURL(file); document.getElementById('capturedVideoPlayer').src = capturedVideoUrl; hasUnreadVideo = true; triggerBubble(); } document.getElementById('cubeWrapper').classList.remove('camera-rec-mode'); }
 function triggerBubble() { if (!hasUnreadVideo) return; const bubble = document.getElementById('samuraiBubble'); bubble.classList.add('bubble-show'); document.getElementById('bubbleText').innerHTML = "⚠️ MẬT THƯ ĐẾN"; }
 
 // ===================================================
-// NÚT VIDEO: TRÍCH XUẤT MÁY CHIẾU (PHÓNG TO, XANH CYAN)
+// NÚT VIDEO: Trích xuất (Phóng to, Xanh Cyan chiếu rọi)
 // ===================================================
 function processSamuraiAction(element) { 
     if (!hasUnreadVideo || !capturedVideoUrl) { 
@@ -290,8 +277,6 @@ function processSamuraiAction(element) {
     
     let cube = document.getElementById('cubeWrapper');
     cube.classList.remove('camera-rec-mode');
-    
-    // Khóa mục tiêu, hóa thân thành máy chiếu xanh
     cube.classList.add('video-play-mode');
     document.querySelector('.projector-beam').classList.add('beam-on');
 
@@ -309,7 +294,7 @@ function closeVideoModule() {
 }
 
 // ===================================================
-// NÚT TĨNH -> PHÂN TÁCH BÓNG MA TÍM THẤT BẠI
+// NÚT TĨNH: Hồn lìa khỏi xác (Venom Soul Phantom)
 // ===================================================
 function triggerStaticNode(element) { 
     if (!checkLoginGuard()) return; 
@@ -318,13 +303,12 @@ function triggerStaticNode(element) {
     playCyberClick();
     
     let cube = document.getElementById('cubeWrapper');
-    // Bắn ra bóng ma Tím
     cube.classList.add('phantom-split'); 
     
+    // Gỡ class sau 600ms (khớp đúng thời lượng CSS Animation)
     setTimeout(() => {
-        // Hút ngược lại lõi Xanh
         cube.classList.remove('phantom-split');
-    }, 500); 
+    }, 600); 
 }
 
 function rotateWallpapersGuard(element) { currentWallpaperIndex = (currentWallpaperIndex + 1) % base64Wallpapers.length; document.getElementById('kdriveBg').src = base64Wallpapers[currentWallpaperIndex]; }

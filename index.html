@@ -10,10 +10,9 @@
     <meta name="theme-color" content="#000000">
     <title>K-Drive V28 Core</title>
 
-    <!-- LIÊN KẾT MANIFEST VÀ ICON -->
-    <link rel="manifest" href="./manifest.json">
-    <link rel="icon" type="image/png" href="./K-Icon.png">
-    <link rel="apple-touch-icon" href="./K-Icon.png">
+    <link rel="manifest" href="https://happyk1900.github.io/kdrive-v28/manifest.json?v=3">
+    <link rel="icon" type="image/png" href="https://happyk1900.github.io/kdrive-v28/K-Icon.png?v=3">
+    <link rel="apple-touch-icon" href="https://happyk1900.github.io/kdrive-v28/K-Icon.png?v=3">
 
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="kdrive-style.css">
@@ -237,12 +236,12 @@
         <div class="video-box"><video id="capturedVideoPlayer" playsinline controls></video></div>
     </div>
 
-    <!-- ĐÂY LÀ ĐIỂM QUAN TRỌNG NHẤT: TRỎ ĐÚNG FILE JS V2 -->
     <script src="core-logic-v2.js"></script>
-<script>
+    <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js')
+                // CHỐT LUÔN ĐƯỜNG DẪN TUYỆT ĐỐI CHO FILE SERVICE WORKER
+                navigator.serviceWorker.register('https://happyk1900.github.io/kdrive-v28/sw.js')
                     .then((reg) => console.log('K-Drive Service Worker Active!', reg))
                     .catch((err) => console.log('Lỗi Service Worker: ', err));
             });

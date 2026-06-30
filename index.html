@@ -239,5 +239,14 @@
 
     <!-- ĐÂY LÀ ĐIỂM QUAN TRỌNG NHẤT: TRỎ ĐÚNG FILE JS V2 -->
     <script src="core-logic-v2.js"></script>
+<script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then((reg) => console.log('K-Drive Service Worker Active!', reg))
+                    .catch((err) => console.log('Lỗi Service Worker: ', err));
+            });
+        }
+    </script>
 </body>
 </html>

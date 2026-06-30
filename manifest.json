@@ -2,21 +2,21 @@
   "name": "K-Drive Core System",
   "short_name": "K-Drive",
   "description": "Hệ thống kiểm soát và phân tích dữ liệu sinh học, chiến thuật.",
-  "start_url": "/kdrive-v28/index.html",
-  "scope": "/kdrive-v28/",
+  "start_url": "https://happyk1900.github.io/kdrive-v28/index.html",
+  "scope": "https://happyk1900.github.io/kdrive-v28/",
   "display": "standalone",
   "background_color": "#000000",
   "theme_color": "#00ff88",
   "orientation": "portrait",
   "icons": [
     {
-      "src": "/kdrive-v28/K-Icon.png",
+      "src": "https://happyk1900.github.io/kdrive-v28/K-Icon.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "/kdrive-v28/K-Icon.png",
+      "src": "https://happyk1900.github.io/kdrive-v28/K-Icon.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
